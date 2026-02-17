@@ -1,0 +1,129 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #fafafa;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header / nav */
+.siteHeader {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.75rem 0;
+}
+
+.siteHeader nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.siteHeader a {
+  font-weight: 500;
+}
+
+.siteHeader a[data-active="true"] {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+/* Main content */
+main {
+  padding: 2rem 0;
+}
+
+/* Form */
+.signupForm {
+  max-width: 28rem;
+}
+
+.signupForm label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.signupForm input,
+.signupForm textarea {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.signupForm textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.signupForm button {
+  margin-top: 1.25rem;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  font-weight: 500;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.signupForm button:hover {
+  background: #1d4ed8;
+}
+
+.signupForm button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.formMessage {
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.formMessage.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.formMessage.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pageTitle {
+  margin-top: 0;
+  font-size: 1.75rem;
+}
+
+.intro {
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
