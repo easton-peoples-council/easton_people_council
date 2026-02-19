@@ -48,7 +48,7 @@ export default function RootLayout({
         <main className="container">{children}</main>
         <footer className="siteFooter">
           <div className="container">
-            © All rights reserved.
+            Join now!
           </div>
         </footer>
       </body>
