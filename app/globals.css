@@ -1,0 +1,328 @@
+/* Easton Community Council style – warm, readable, community-focused */
+
+:root {
+  --color-bg: #f7f5f1;
+  --color-surface: #fffefb;
+  --color-primary: #2d5a4a;
+  --color-primary-hover: #234738;
+  --color-text: #1a1a1a;
+  --color-text-muted: #4a4a4a;
+  --color-border: #e5e2dc;
+  --font-heading: "DM Serif Display", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --container: min(90vw, 720px);
+  --section-spacing: 3.5rem;
+  --radius: 6px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* Header */
+.siteHeader {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 0;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.siteBrand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.siteBrand:hover {
+  color: var(--color-primary-hover);
+}
+
+.siteHeader nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.siteHeader nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+
+.siteHeader nav a:hover {
+  color: var(--color-primary);
+}
+
+/* Hero */
+.hero {
+  padding: 3.5rem 0 4rem;
+  text-align: center;
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+  max-width: 20ch;
+  margin-inline: auto;
+}
+
+.heroSubtitle {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  margin: 0 0 1.75rem;
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+.heroCta {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.heroCta:hover {
+  background: var(--color-primary-hover);
+}
+
+/* Content sections */
+.contentSection {
+  padding: var(--section-spacing) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.contentSection:first-of-type {
+  border-top: none;
+}
+
+.contentSection h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin: 0 0 0.75rem;
+}
+
+.contentSection h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.contentSection h3:first-of-type {
+  margin-top: 0.5rem;
+}
+
+.contentSection p,
+.contentSection ul {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.contentSection ul {
+  padding-left: 1.25rem;
+}
+
+.contentSection li {
+  margin-bottom: 0.35rem;
+}
+
+.contentSection p:last-child {
+  margin-bottom: 0;
+}
+
+/* Get Involved section */
+.getInvolved {
+  padding: var(--section-spacing) 0 4rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.getInvolved h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem;
+}
+
+.getInvolved .intro {
+  color: var(--color-text-muted);
+}
+
+.getInvolved a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.getInvolved a:hover {
+  text-decoration: underline;
+}
+
+/* Signup form */
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 28rem;
+}
+
+.signupForm label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.signupForm input,
+.signupForm textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.signupForm input:focus,
+.signupForm textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(45, 90, 74, 0.15);
+}
+
+.signupForm input:disabled,
+.signupForm textarea:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.signupForm textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.signupForm button {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+
+.signupForm button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.signupForm button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.formMessage {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.formMessage.success {
+  color: var(--color-primary);
+}
+
+.formMessage.error {
+  color: #b53c2e;
+}
+
+/* Inner page sections (e.g. Proposal) */
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin: 2rem 0 1.5rem;
+}
+
+main section h2 {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin: 2rem 0 0.5rem;
+}
+
+main section h2:first-child {
+  margin-top: 0;
+}
+
+main section p {
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+}
+
+/* Footer */
+.siteFooter {
+  background: var(--color-primary);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem 0;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.siteFooter a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.siteFooter a:hover {
+  text-decoration: none;
+}
