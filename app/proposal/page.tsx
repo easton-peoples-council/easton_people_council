@@ -23,7 +23,7 @@ export default function ProposalPage() {
           A Peoples Council is a type of local council, with the same official powers as a Parish, Town, or Village Council. In areas without a parish council, we tend to have less influence over many decisions affecting our lives.
         </p>
         <p>
-          Theseeee councils can manage local spaces and initiatives—such as allotments, sports facilities, and youth projects—and act as a voice for the community in discussions with the police, health services, local planning authorities, developers, and even government bodies and parliamentarians. Importantly, City Councils have a statutory duty to consult with parish councils, giving local people a direct say at the city level, too.
+          These councils can manage local spaces and initiatives—such as allotments, sports facilities, and youth projects—and act as a voice for the community in discussions with the police, health services, local planning authorities, developers, and even government bodies and parliamentarians. Importantly, City Councils have a statutory duty to consult with parish councils, giving local people a direct say at the city level, too.
         </p>
       </section>
     </>

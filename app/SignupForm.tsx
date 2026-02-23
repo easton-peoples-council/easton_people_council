@@ -82,7 +82,7 @@ export default function SignupForm() {
       />
 
       <button type="submit" disabled={state === "submitting"}>
-        {state === "submitting" ? "Submitting…" : "Sign up"}
+        {state === "submitting" ? "Submitting…" : "Get Involved"}
       </button>
 
       {state === "success" && (
