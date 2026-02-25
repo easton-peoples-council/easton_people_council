@@ -3,19 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const name = (body.name ?? "").trim();
+    const firstName = (body.firstName ?? "").trim();
+    const lastName = (body.lastName ?? "").trim();
     const email = (body.email ?? "").trim();
     const phone = (body.phone ?? "").trim();
     const comment = (body.comment ?? "").trim();
 
-    if (!name || !email || !phone || !comment) {
+    if (!firstName) {
       return NextResponse.json(
-        { error: "Name, email, phone, and comment are required" },
+        { error: "First name is required" },
         { status: 400 }
       );
     }
 
-    if (!name) {
+    if (!firstName) {
       return NextResponse.json(
         { error: "Name is required" },
         { status: 400 }
@@ -36,7 +37,8 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: name,
+        first_name: firstName,
+        last_name: lastName,
         phone: phone,
         comment: comment,
         email,
@@ -62,3 +64,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// TODO GDPR CHECKS

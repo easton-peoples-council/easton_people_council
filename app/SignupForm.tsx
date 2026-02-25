@@ -5,7 +5,8 @@ import { useState, FormEvent } from "react";
 type FormState = "idle" | "submitting" | "success" | "error";
 
 export default function SignupForm() {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [comment, setComment] = useState("");
@@ -21,7 +22,7 @@ export default function SignupForm() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, comment }),
+        body: JSON.stringify({ firstName, lastName, email, phone, comment }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -32,7 +33,8 @@ export default function SignupForm() {
       }
 
       setState("success");
-      setName("");
+      setFirstName("");
+      setLastName("");
       setEmail("");
       setPhone("");
       setComment("");
@@ -44,15 +46,29 @@ export default function SignupForm() {
 
   return (
     <form className="signupForm" onSubmit={handleSubmit}>
-      <label htmlFor="name">Name</label>
-      <input
-        id="name"
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        disabled={state === "submitting"}
-      />
+      <div className="signupFormNameRow">
+        <div>
+          <label htmlFor="firstName">First name</label>
+          <input
+            id="firstName"
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+            disabled={state === "submitting"}
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName">Last name</label>
+          <input
+            id="lastName"
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            disabled={state === "submitting"}
+          />
+        </div>
+      </div>
 
       <label htmlFor="email">Email address</label>
       <input

@@ -212,6 +212,18 @@ body {
   max-width: 28rem;
 }
 
+.signupFormNameRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.signupFormNameRow > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .signupForm label {
   font-size: 0.9375rem;
   font-weight: 500;
