@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const QOMON_SERVER = "https://incoming.qomon.app"
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -30,25 +32,31 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const response = await fetch("https://api.qomon.com/contacts", {  // TODO Specify endpoint
+    const response = await fetch(`${QOMON_SERVER}/contacts/upsert`, {  // TODO Specify endpoint
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.QOMON_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
-        comment: comment,
-        email,
-        tags: ["website-signup"],  // TODO Specify tags look up what they mean
+        kind: "contact",
+        data: {
+          firstname: firstName,
+          surname: lastName,
+          phone: phone,
+          // comment: comment,
+          mail: email,
+          // tags: ["website-signup"],  // TODO Specify tags look up what they mean
+        }
       }),
     });
+    const responseText = await response.text();
+
+    console.log("Qomon status:", response.status);
+    console.log("Qomon response:", responseText);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Qomon error:", errorText);
+      console.error("Qomon error:", responseText);
       return NextResponse.json(
         { error: "Failed to create contact" },
         { status: 500 }
