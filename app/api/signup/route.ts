@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
           firstname: firstName,
           surname: lastName,
           phone: phone,
-          // comment: comment,
+          // comment: comment,  / TODO include/allow comments. allow updating of existing contact if there are matches in place
           mail: email,
           // tags: ["website-signup"],  // TODO Specify tags look up what they mean
         }
