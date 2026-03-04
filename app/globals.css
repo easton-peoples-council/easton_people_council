@@ -1,5 +1,30 @@
 /* Easton Community Council style – warm, readable, community-focused */
 
+/* Add your .woff2 / .woff files to public/fonts/ to load these fonts */
+@font-face {
+  font-family: "Milligram Macro";
+  src: url("/fonts/MilligramMacro.woff2") format("woff2"), url("/fonts/MilligramMacro.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Alfredino Semirounded";
+  src: url("/fonts/AlfredinoSemirounded.woff2") format("woff2"), url("/fonts/AlfredinoSemirounded.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ABC Ginto";
+  src: url("/fonts/ABCGinto.woff2") format("woff2"), url("/fonts/ABCGinto.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-bg: #f7f5f1;
   --color-surface: #fffefb;
@@ -8,8 +33,9 @@
   --color-text: #1a1a1a;
   --color-text-muted: #4a4a4a;
   --color-border: #e5e2dc;
-  --font-heading: "DM Serif Display", Georgia, serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-heading: "Milligram Macro", Georgia, serif;
+  --font-subheading: "Alfredino Semirounded", system-ui, sans-serif;
+  --font-body: "ABC Ginto", system-ui, sans-serif;
   --container: min(90vw, 720px);
   --section-spacing: 3.5rem;
   --radius: 6px;
@@ -102,6 +128,7 @@ body {
 }
 
 .heroSubtitle {
+  font-family: var(--font-subheading);
   font-size: 1.125rem;
   color: var(--color-text-muted);
   margin: 0 0 1.75rem;
@@ -143,7 +170,7 @@ body {
 }
 
 .contentSection h3 {
-  font-family: var(--font-body);
+  font-family: var(--font-subheading);
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-text);
