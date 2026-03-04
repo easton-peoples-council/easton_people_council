@@ -87,7 +87,7 @@ main .getInvolved ul {
 .headerInner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -340,6 +340,7 @@ main .getInvolved ul {
   font-weight: 400;
   color: var(--color-primary);
   margin: 2rem 0 1.5rem;
+  text-align: center;
 }
 
 main section h2 {
