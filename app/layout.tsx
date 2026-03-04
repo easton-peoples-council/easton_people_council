@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import DonateButton from "@/components/DonateButton";
 
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
@@ -41,7 +42,7 @@ export default function RootLayout({
         <main className="container">{children}</main>
         <footer className="siteFooter">
           <div className="container">
-            Join now!
+            <DonateButton />
           </div>
         </footer>
       </body>
