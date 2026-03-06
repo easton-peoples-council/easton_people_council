@@ -3,18 +3,27 @@ import { datoClient, datoPreviewClient } from "@/lib/datocms";
 /**
  * Query matches a DatoCMS model with API id "article".
  * Adjust the query and fields to match your DatoCMS schema.
- */
+ */  
+// url_identifier is not used in the query? MK TODO
 const ARTICLES_QUERY = `
   query PressPage {
     allArticles(orderBy: _publishedAt_DESC, first: 50) {
       id
       title
+      content {
+        value
+      }
+      images {
+        url
+      }
       _publishedAt
-      excerpt
-      url
     }
   }
 `;
+
+/** DatoCMS Structured Text can be a string (legacy) or a DAST document object. */
+type ContentValue = string | { schema?: string; document?: DastNode } | null;
+type DastNode = { type?: string; value?: string; children?: DastNode[] };
 
 type Article = {
   id: string;
@@ -22,7 +31,33 @@ type Article = {
   _publishedAt: string;
   excerpt: string | null;
   url: string | null;
+  content?: { value: ContentValue } | null;
 };
+
+function textFromDast(node: DastNode | undefined): string {
+  if (!node) return "";
+  if (typeof node.value === "string") return node.value;
+  const children = node.children;
+  if (!Array.isArray(children)) return "";
+  return children.map(textFromDast).join("");
+}
+
+function contentPreview(content: Article["content"], maxLength = 160): string | null {
+  const raw = content?.value;
+  if (raw == null) return null;
+  let plain: string;
+  if (typeof raw === "string") {
+    plain = raw.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  } else if (typeof raw === "object") {
+    const root = "document" in raw ? (raw as { document: DastNode }).document : (raw as DastNode);
+    plain = textFromDast(root).replace(/\s+/g, " ").trim();
+  } else {
+    return null;
+  }
+  if (!plain) return null;
+  if (plain.length <= maxLength) return plain;
+  return plain.slice(0, maxLength).trim() + "…";
+}
 
 type ArticlesData = {
   allArticles: Article[];
@@ -40,9 +75,15 @@ export default async function PressPage({ searchParams }: Props) {
   let articles: Article[] = [];
   try {
     const data = await client.request<ArticlesData>(ARTICLES_QUERY);
+    console.log("[Press] DatoCMS response:", JSON.stringify(data, null, 2));
     articles = data?.allArticles ?? [];
-  } catch {
+  } catch (error){
+    console.error("[Press] Error fetching DatoCMS data:", error);
     // No token, wrong schema, or API error: show placeholder
+    if (error && typeof error === "object" && "response" in error) {
+      const res = (error as { response?: { errors?: unknown } }).response;
+      if (res?.errors) console.error("[Press] GraphQL errors:", res.errors);
+    }
   }
 
   return (
@@ -80,6 +121,14 @@ export default async function PressPage({ searchParams }: Props) {
                   {item.excerpt}
                 </p>
               )}
+              {(() => {
+                const preview = contentPreview(item.content);
+                return preview ? (
+                  <p style={{ margin: "0.25rem 0 0", color: "var(--color-text-muted)", fontSize: "0.95rem" }}>
+                    {preview}
+                  </p>
+                ) : null;
+              })()}
             </li>
           ))}
         </ul>
