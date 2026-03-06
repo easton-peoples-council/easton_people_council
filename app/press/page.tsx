@@ -9,9 +9,12 @@ const ARTICLES_QUERY = `
     allArticles(orderBy: _publishedAt_DESC, first: 50) {
       id
       title
-      _publishedAt
-      excerpt
-      url
+      url_identifier
+      content {
+        value
+      }
+      images
+      published_date
     }
   }
 `;
