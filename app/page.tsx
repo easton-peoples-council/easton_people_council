@@ -1,7 +1,17 @@
 import SignupForm from "./SignupForm";
 import Link from "next/link";
+import { getContactsCount } from "@/lib/qomon";
 
-export default function HomePage() {
+export default async function HomePage() {
+  let contactsCount: number | null = null;
+  try {
+    console.log("[page] Fetching contacts count...");
+    contactsCount = await getContactsCount();
+    console.log("[page] contactsCount =", contactsCount);
+  } catch (err) {
+    console.error("[page] getContactsCount failed:", err);
+  }
+
   return (
     <>
       <section className="hero">
@@ -9,6 +19,11 @@ export default function HomePage() {
         <p className="heroSubtitle">
           Together let&apos;s explore what a People&apos;s Council could look and feel like for us in Easton!
         </p>
+        {contactsCount !== null && (
+          <p className="heroContacts" style={{ marginTop: "1rem", opacity: 0.9 }}>
+            {contactsCount} {contactsCount === 1 ? "person has" : "people have"} already signed up!
+          </p>
+        )}
         <a href="#get-involved" className="heroCta">
           Get in touch
         </a>
