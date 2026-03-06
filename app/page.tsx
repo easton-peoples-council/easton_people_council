@@ -1,6 +1,7 @@
 import SignupForm from "./SignupForm";
 import Link from "next/link";
 import { getContactsCount } from "@/lib/qomon";
+import { SHOW_PETITION } from "@/lib/feature-flags";
 
 export default async function HomePage() {
   let contactsCount: number | null = null;
@@ -91,9 +92,11 @@ export default async function HomePage() {
           Sign up with your name, email, phone and a comment to get in touch.
         </p>
         <SignupForm />
-        <p style={{ marginTop: "1rem" }}>
-          Or <Link href="/petition">view the petition</Link>.
-        </p>
+        {SHOW_PETITION && (
+          <p style={{ marginTop: "1rem" }}>
+            Or <Link href="/petition">view the petition</Link>.
+          </p>
+        )}
       </section>
     </>
   );

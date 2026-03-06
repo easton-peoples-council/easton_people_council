@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import DonateButton from "@/components/DonateButton";
+import { SHOW_PETITION } from "@/lib/feature-flags";
 
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
@@ -12,7 +13,7 @@ const navLinks = [
   { href: "/", label: "Homepage" },
   { href: "/rationale", label: "Rationale" },
   { href: "/proposal", label: "Proposal" },
-  { href: "/petition", label: "Petition" },
+  ...(SHOW_PETITION ? [{ href: "/petition" as const, label: "Petition" as const }] : []),
   { href: "/press", label: "Press" },
 ] as const;
 
