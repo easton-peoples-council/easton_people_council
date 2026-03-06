@@ -7,7 +7,7 @@ export default function HomePage() {
       <section className="hero">
         <h1 className="heroTitle">Is it time to build community power in Easton?</h1>
         <p className="heroSubtitle">
-          Together let&apos;s explore what a People&apos;s Council could look and feel like for us in Easton.
+          Together let&apos;s explore what a People&apos;s Council could look and feel like for us in Easton!
         </p>
         <a href="#get-involved" className="heroCta">
           Get in touch
