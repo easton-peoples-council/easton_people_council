@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getContactsCount } from "@/lib/qomon";
 import { SHOW_PETITION } from "@/lib/feature-flags";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   let contactsCount: number | null = null;
   try {
