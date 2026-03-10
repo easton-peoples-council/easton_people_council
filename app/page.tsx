@@ -2,6 +2,7 @@ import SignupForm from "./SignupForm";
 import Link from "next/link";
 import { getContactsCount } from "@/lib/qomon";
 import { SHOW_PETITION } from "@/lib/feature-flags";
+import Calendar from "@/components/Calendar";
 
 export const dynamic = "force-dynamic";
 
@@ -86,6 +87,7 @@ export default async function HomePage() {
         <p>
           Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea.
         </p>
+        <Calendar />
       </section>
 
       <section id="get-involved" className="getInvolved">
