@@ -11,6 +11,7 @@ export async function GET() {
     .filter((event: any) => event.type === "VEVENT")
     .map((event: any) => ({
       title: event.summary,
+      description: event.description ?? "",
       start: event.start,
       end: event.end,
     }));
