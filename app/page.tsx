@@ -87,7 +87,9 @@ export default async function HomePage() {
         <p>
           Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea.
         </p>
-        <Calendar />
+        <div className="calendarFullWidth">
+          <Calendar />
+        </div>
       </section>
 
       <section id="get-involved" className="getInvolved">

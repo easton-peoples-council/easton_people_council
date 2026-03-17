@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import Image from "next/image";
 import DonateButton from "@/components/DonateButton";
 import { SHOW_PETITION } from "@/lib/feature-flags";
 
@@ -28,8 +29,15 @@ export default function RootLayout({
       <body>
         <header className="siteHeader">
           <div className="container headerInner">
-            <Link href="/" className="siteBrand">
-              A Community Council for Easton?
+            <Link href="/" className="siteBrand" aria-label="Easton Council – Home">
+              <Image
+                src="/logo.svg"
+                alt="Easton Council"
+                width={280}
+                height={56}
+                priority
+                className="siteBrandLogo"
+              />
             </Link>
             <nav>
               {navLinks.map(({ href, label }) => (

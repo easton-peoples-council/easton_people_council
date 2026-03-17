@@ -1,61 +1,98 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import listPlugin from "@fullcalendar/list";
-
-function escapeHtml(text: string) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
 
 type CalendarEvent = {
-  title?: string;
+  title: string;
   start: string;
   end: string;
-  extendedProps: { description: string };
+  description: string;
+  location: string;
 };
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
 
 export default function Calendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/events")
       .then((res) => res.json())
-      .then((data: Array<{ title?: string; description?: string; start: string; end: string }>) =>
-        setEvents(
-          data.map(({ title, description, start, end }) => ({
-            title,
+      .then((data: Array<{ title?: string; description?: string; location?: string; start: string; end: string }>) => {
+        const cleaned = data.map(({ title, description, location, start, end }) => {
+          const cleanTitle = (title ?? "").replace(/\s*\[In-person\]\s*/gi, "").trim() || "Event";
+          const rawDesc = description ?? "";
+          const cleanDesc = rawDesc.replace(/^\s*\[In-person\]\s*\n?/gi, "").trim();
+          return {
+            title: cleanTitle,
             start,
             end,
-            extendedProps: { description: description ?? "" },
-          }))
-        )
-      );
+            description: cleanDesc,
+            location: location ?? "",
+          };
+        });
+        cleaned.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+        setEvents(cleaned);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
+  if (loading) {
+    return (
+      <div className="calendar">
+        <p className="calendar-loading">Loading events…</p>
+      </div>
+    );
+  }
+
+  if (events.length === 0) {
+    return (
+      <div className="calendar">
+        <p className="calendar-empty">No upcoming events at the moment. Check back soon.</p>
+      </div>
+    );
+  }
+
   return (
-    <FullCalendar
-      plugins={[listPlugin]}
-      initialView="listYear"
-      events={events}
-      height="auto"
-      eventDidMount={(arg) => {
-        const desc = arg.event.extendedProps?.description;
-        if (desc) {
-          const titleEl = arg.el.querySelector(".fc-event-title");
-          if (titleEl) {
-            const descEl = document.createElement("div");
-            descEl.className = "fc-event-description";
-            descEl.style.marginTop = "4px";
-            descEl.style.fontSize = "0.9em";
-            descEl.style.opacity = "0.9";
-            descEl.textContent = desc;
-            titleEl.insertAdjacentElement("afterend", descEl);
-          }
-        }
-      }}
-    />
+    <div className="calendar">
+      <ul className="calendar-list">
+        {events.map((event, i) => (
+          <li key={i} className="calendar-event">
+            <time className="calendar-event-date" dateTime={event.start}>
+              {formatDate(event.start)}
+            </time>
+            <span className="calendar-event-time">
+              {formatTime(event.start)} – {formatTime(event.end)}
+            </span>
+            <h3 className="calendar-event-title">{event.title}</h3>
+            {event.location && (
+              <p className="calendar-event-meta">
+                <span className="calendar-event-label">Location</span> {event.location}
+              </p>
+            )}
+            {event.description && (
+              <p className="calendar-event-desc">{event.description}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
