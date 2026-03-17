@@ -46,7 +46,7 @@
   --font-heading: "Milligram Macro", system-ui, sans-serif;
   --font-heading-weight: 800;
   --heading-fill: #fff;
-  --heading-stroke-shadow: 3px 0 0 #000, -3px 0 0 #000, 0 3px 0 #000, 0 -3px 0 #000, 2.12px 2.12px 0 #000, -2.12px -2.12px 0 #000, 2.12px -2.12px 0 #000, -2.12px 2.12px 0 #000;
+  --heading-stroke-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1.41px 1.41px 0 #000, -1.41px -1.41px 0 #000, 1.41px -1.41px 0 #000, -1.41px 1.41px 0 #000;
   --font-subheading: system-ui, sans-serif;
   --font-nav: "Alfredino Semirounded", system-ui, sans-serif;
   --font-body: "ABC Ginto", system-ui, sans-serif;
@@ -160,6 +160,7 @@ main .getInvolved ul {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: var(--font-heading-weight);
   line-height: 1.25;
+  letter-spacing: 0.04em;
   color: var(--heading-fill);
   text-shadow: var(--heading-stroke-shadow);
   margin: 0 0 1rem;
@@ -205,6 +206,7 @@ main .getInvolved ul {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: var(--font-heading-weight);
+  letter-spacing: 0.04em;
   color: var(--heading-fill);
   text-shadow: var(--heading-stroke-shadow);
   margin: 0 0 0.75rem;
@@ -242,33 +244,41 @@ main .getInvolved ul {
 
 /* Get Involved section */
 .getInvolved {
-  padding: var(--section-spacing) 0 4rem;
+  position: relative;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: 2rem 1.25rem 2.5rem;
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
   border-radius: var(--radius);
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
   margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.getInvolved::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.14;
+  pointer-events: none;
 }
 
 .getInvolved h2 {
-  display: inline-block;
+  position: relative;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: var(--font-heading-weight);
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  text-shadow: 2px 0 0 var(--color-primary), -2px 0 0 var(--color-primary), 0 2px 0 var(--color-primary), 0 -2px 0 var(--color-primary), 1.41px 1.41px 0 var(--color-primary), -1.41px -1.41px 0 var(--color-primary), 1.41px -1.41px 0 var(--color-primary), -1.41px 1.41px 0 var(--color-primary);
   margin: 0 0 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 700;
-  text-shadow: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .getInvolved .intro {
+  position: relative;
   color: var(--color-text-muted);
+  margin-bottom: 1rem;
 }
 
 .getInvolved a {
@@ -282,16 +292,17 @@ main .getInvolved ul {
 
 /* Signup form */
 .signupForm {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   max-width: 28rem;
   margin-inline: auto;
 }
 
 .signupFormNameRow {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .signupFormNameRow > div {
@@ -503,46 +514,36 @@ main section p {
   border-left: 4px solid var(--color-primary);
 }
 
-.calendar-event-date {
+.calendar-event-datetime {
   display: inline-block;
   font-family: var(--font-subheading);
   font-size: 0.9rem;
   color: var(--color-primary);
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.5rem;
   padding: 0.35rem 0.6rem;
   background: rgba(25, 42, 58, 0.12);
   border-radius: var(--radius);
 }
 
-.calendar-event-time {
-  display: inline-block;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  margin-left: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: var(--color-border);
-  border-radius: var(--radius);
-}
-
-.calendar-event-title {
+.calendar .calendar-event-title {
   display: block;
   font-family: system-ui, sans-serif;
   font-size: 1.15rem;
   font-weight: 400;
-  margin: 0.5rem 0 0.25rem;
+  margin: 0.5rem 0;
   padding: 0.4rem 0.6rem;
-  color: var(--color-text);
-  background: rgba(25, 42, 58, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  background: var(--color-primary);
   border-radius: var(--radius);
-  border-left: 3px solid var(--color-primary);
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .calendar-event-meta {
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  margin: 0.25rem 0 0;
+  margin: 0.5rem 0 0;
   padding: 0.4rem 0.6rem;
-  background: rgba(74, 74, 74, 0.06);
+  background: var(--color-bg);
   border-radius: var(--radius);
 }
 
@@ -550,13 +551,13 @@ main section p {
   opacity: 0.85;
 }
 
-.calendar-event-desc {
+.calendar .calendar-event-desc {
   font-size: 0.95rem;
   line-height: 1.5;
-  margin: 0.5rem 0 0;
+  margin: 0.5rem 0;
   padding: 0.5rem 0.6rem;
   color: var(--color-text);
-  background: var(--color-bg);
+  background: var(--color-accent);
   border-radius: var(--radius);
   white-space: pre-wrap;
 }

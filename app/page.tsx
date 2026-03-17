@@ -92,8 +92,8 @@ export default async function HomePage() {
 
       <section id="get-involved" className="getInvolved">
         <h2>Get Involved Today!</h2>
-        <p className="intro" style={{ marginBottom: "1.5rem" }}>
-          Sign up with your name, email, phone and a comment to get in touch.
+        <p className="intro">
+          Hear more, help organise, or just say hi!
         </p>
         <SignupForm />
         {SHOW_PETITION && (

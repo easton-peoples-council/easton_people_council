@@ -28,6 +28,10 @@ function formatTime(iso: string): string {
   });
 }
 
+function formatDateTime(start: string, end: string): string {
+  return `${formatDate(start)}, ${formatTime(start)} – ${formatTime(end)}`;
+}
+
 export default function Calendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,17 +79,12 @@ export default function Calendar() {
       <ul className="calendar-list">
         {events.map((event, i) => (
           <li key={i} className="calendar-event">
-            <time className="calendar-event-date" dateTime={event.start}>
-              {formatDate(event.start)}
+            <time className="calendar-event-datetime" dateTime={event.start}>
+              {formatDateTime(event.start, event.end)}
             </time>
-            <span className="calendar-event-time">
-              {formatTime(event.start)} – {formatTime(event.end)}
-            </span>
             <h3 className="calendar-event-title">{event.title}</h3>
             {event.location && (
-              <p className="calendar-event-meta">
-                <span className="calendar-event-label">Location</span> {event.location}
-              </p>
+              <p className="calendar-event-meta">{event.location}</p>
             )}
             {event.description && (
               <p className="calendar-event-desc">{event.description}</p>
