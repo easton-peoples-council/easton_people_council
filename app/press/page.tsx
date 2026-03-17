@@ -75,7 +75,6 @@ export default async function PressPage({ searchParams }: Props) {
   let articles: Article[] = [];
   try {
     const data = await client.request<ArticlesData>(ARTICLES_QUERY);
-    console.log("[Press] DatoCMS response:", JSON.stringify(data, null, 2));
     articles = data?.allArticles ?? [];
   } catch (error){
     console.error("[Press] Error fetching DatoCMS data:", error);

@@ -52,9 +52,6 @@ export async function POST(request: NextRequest) {
     });
     const responseText = await response.text();
 
-    console.log("Qomon status:", response.status);
-    console.log("Qomon response:", responseText);
-
     if (!response.ok) {
       console.error("Qomon error:", responseText);
       return NextResponse.json(

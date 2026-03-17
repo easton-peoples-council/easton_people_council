@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Link from "next/link";
-import Image from "next/image";
 import DonateButton from "@/components/DonateButton";
 import { SHOW_PETITION } from "@/lib/feature-flags";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
@@ -28,24 +28,30 @@ export default function RootLayout({
       <head></head>
       <body>
         <header className="siteHeader">
-          <div className="container headerInner">
-            <Link href="/" className="siteBrand" aria-label="Easton Council – Home">
-              <Image
-                src="/logo.svg"
-                alt="Easton Council"
-                width={280}
-                height={56}
-                priority
-                className="siteBrandLogo"
-              />
-            </Link>
-            <nav>
-              {navLinks.map(({ href, label }) => (
-                <Link key={href} href={href}>
-                  {label}
-                </Link>
-              ))}
-            </nav>
+          <div className="headerLogoBlock">
+            <div className="container">
+              <Link href="/" className="siteBrand" aria-label="A Community Council for Easton – Home">
+                <Image
+                  src="/logo.png"
+                  alt="A Community Council for Easton"
+                  width={227}
+                  height={110}
+                  className="siteBrandLogo"
+                  priority
+                />
+              </Link>
+            </div>
+          </div>
+          <div className="headerNavBar">
+            <div className="container">
+              <nav>
+                {navLinks.map(({ href, label }) => (
+                  <Link key={href} href={href}>
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </div>
         </header>
         <main className="container">{children}</main>

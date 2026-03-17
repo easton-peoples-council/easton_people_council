@@ -9,9 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   let contactsCount: number | null = null;
   try {
-    console.log("[page] Fetching contacts count...");
     contactsCount = await getContactsCount();
-    console.log("[page] contactsCount =", contactsCount);
   } catch (err) {
     console.error("[page] getContactsCount failed:", err);
   }
@@ -93,7 +91,7 @@ export default async function HomePage() {
       </section>
 
       <section id="get-involved" className="getInvolved">
-        <h2>Get Involved Today.</h2>
+        <h2>Get Involved Today!</h2>
         <p className="intro" style={{ marginBottom: "1.5rem" }}>
           Sign up with your name, email, phone and a comment to get in touch.
         </p>

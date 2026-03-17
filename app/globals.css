@@ -3,15 +3,23 @@
 /* Add your .woff2 / .woff files to public/fonts/ to load these fonts */
 @font-face {
   font-family: "Milligram Macro";
-  src: url("/fonts/MilligramMacro.woff2") format("woff2"), url("/fonts/MilligramMacro.woff") format("woff");
+  src: url("/fonts/MilligramMacro.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
+  font-family: "Milligram Macro";
+  src: url("/fonts/MilligramMacro-Extrabold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Alfredino Semirounded";
-  src: url("/fonts/AlfredinoSemirounded.woff2") format("woff2"), url("/fonts/AlfredinoSemirounded.woff") format("woff");
+  src: url("/fonts/AlfredinoSemirounded.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -19,7 +27,7 @@
 
 @font-face {
   font-family: "ABC Ginto";
-  src: url("/fonts/ABCGinto.woff2") format("woff2"), url("/fonts/ABCGinto.woff") format("woff");
+  src: url("/fonts/ABCGinto.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -35,8 +43,12 @@
   --color-text: #1a1a1a;
   --color-text-muted: #4a4a4a;
   --color-border: #d9c9c2;
-  --font-heading: "Milligram Macro", Georgia, serif;
-  --font-subheading: "Alfredino Semirounded", system-ui, sans-serif;
+  --font-heading: "Milligram Macro", system-ui, sans-serif;
+  --font-heading-weight: 800;
+  --heading-fill: #fff;
+  --heading-stroke-shadow: 3px 0 0 #000, -3px 0 0 #000, 0 3px 0 #000, 0 -3px 0 #000, 2.12px 2.12px 0 #000, -2.12px -2.12px 0 #000, 2.12px -2.12px 0 #000, -2.12px 2.12px 0 #000;
+  --font-subheading: system-ui, sans-serif;
+  --font-nav: "Alfredino Semirounded", system-ui, sans-serif;
   --font-body: "ABC Ginto", system-ui, sans-serif;
   --container: min(90vw, 720px);
   --section-spacing: 3.5rem;
@@ -83,46 +95,58 @@ main .getInvolved ul {
 .siteHeader {
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  padding: 1rem 0;
 }
 
-.headerInner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+.headerLogoBlock {
+  padding: 2rem 0;
+  text-align: center;
+  background: var(--color-primary);
 }
 
 .siteBrand {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  line-height: 0;
 }
 
 .siteBrandLogo {
   display: block;
-  height: 2.5rem;
+  height: clamp(3.5rem, 8vw, 5.5rem);
   width: auto;
-  max-width: min(280px, 60vw);
   object-fit: contain;
-  object-position: left center;
 }
 
-.siteHeader nav {
+.headerNavBar {
+  background: var(--color-accent);
+  padding: 0.6rem 0;
+}
+
+.headerNavBar .container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.headerNavBar nav {
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
-.siteHeader nav a {
-  color: var(--color-text-muted);
+.headerNavBar nav a {
+  font-family: var(--font-nav);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
 }
 
-.siteHeader nav a:hover {
-  color: var(--color-primary);
+.headerNavBar nav a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* Hero */
@@ -134,9 +158,10 @@ main .getInvolved ul {
 .heroTitle {
   font-family: var(--font-heading);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 400;
+  font-weight: var(--font-heading-weight);
   line-height: 1.25;
-  color: var(--color-text);
+  color: var(--heading-fill);
+  text-shadow: var(--heading-stroke-shadow);
   margin: 0 0 1rem;
   max-width: 20ch;
   margin-inline: auto;
@@ -179,8 +204,9 @@ main .getInvolved ul {
 .contentSection h2 {
   font-family: var(--font-heading);
   font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--color-primary);
+  font-weight: var(--font-heading-weight);
+  color: var(--heading-fill);
+  text-shadow: var(--heading-stroke-shadow);
   margin: 0 0 0.75rem;
 }
 
@@ -226,11 +252,19 @@ main .getInvolved ul {
 }
 
 .getInvolved h2 {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--color-primary);
+  display: inline-block;
   margin: 0 0 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-shadow: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .getInvolved .intro {
@@ -342,8 +376,9 @@ main .getInvolved ul {
 .pageTitle {
   font-family: var(--font-heading);
   font-size: 1.75rem;
-  font-weight: 400;
-  color: var(--color-primary);
+  font-weight: var(--font-heading-weight);
+  color: var(--heading-fill);
+  text-shadow: var(--heading-stroke-shadow);
   margin: 2rem 0 1.5rem;
   text-align: center;
 }
@@ -351,8 +386,9 @@ main .getInvolved ul {
 main section h2 {
   font-family: var(--font-heading);
   font-size: 1.35rem;
-  font-weight: 400;
-  color: var(--color-primary);
+  font-weight: var(--font-heading-weight);
+  color: var(--heading-fill);
+  text-shadow: var(--heading-stroke-shadow);
   margin: 2rem 0 0.5rem;
 }
 
@@ -490,7 +526,7 @@ main section p {
 
 .calendar-event-title {
   display: block;
-  font-family: var(--font-heading);
+  font-family: system-ui, sans-serif;
   font-size: 1.15rem;
   font-weight: 400;
   margin: 0.5rem 0 0.25rem;
