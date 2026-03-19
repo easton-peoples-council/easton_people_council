@@ -1,5 +1,11 @@
 import { datoClient, datoPreviewClient } from "@/lib/datocms";
 
+function getGraphQLErrors(error: unknown): unknown[] | undefined {
+  if (error == null || typeof error !== "object" || !("response" in error)) return undefined;
+  const errors = (error as { response?: { errors?: unknown } }).response?.errors;
+  return errors !== undefined ? (Array.isArray(errors) ? errors : [errors]) : undefined;
+}
+
 /**
  * Query matches a DatoCMS model with API id "article".
  * Adjust the query and fields to match your DatoCMS schema.
@@ -29,8 +35,6 @@ type Article = {
   id: string;
   title: string;
   _publishedAt: string;
-  excerpt: string | null;
-  url: string | null;
   content?: { value: ContentValue } | null;
 };
 
@@ -76,20 +80,16 @@ export default async function PressPage({ searchParams }: Props) {
   try {
     const data = await client.request<ArticlesData>(ARTICLES_QUERY);
     articles = data?.allArticles ?? [];
-  } catch (error){
-    console.error("[Press] Error fetching DatoCMS data:", error);
-    // No token, wrong schema, or API error: show placeholder
-    if (error && typeof error === "object" && "response" in error) {
-      const res = (error as { response?: { errors?: unknown } }).response;
-      if (res?.errors) console.error("[Press] GraphQL errors:", res.errors);
-    }
+  } catch (error) {
+    const graphqlErrors = getGraphQLErrors(error);
+    console.error("[Press] DatoCMS fetch failed", graphqlErrors ?? error);
   }
 
   return (
     <>
       <h1 className="pageTitle">Press</h1>
       {isPreview && (
-        <p className="intro" style={{ fontStyle: "italic", opacity: 0.9 }}>
+        <p className="intro press-preview-mode">
           Preview mode — showing draft and published content.
         </p>
       )}
@@ -98,38 +98,27 @@ export default async function PressPage({ searchParams }: Props) {
           This page will contain press and media information for the Easton People Council. Add your content here.
         </p>
       ) : (
-        <ul className="contentSection" style={{ listStyle: "none", paddingLeft: 0, textAlign: "left" }}>
-          {articles.map((item) => (
-            <li key={item.id} style={{ marginBottom: "1.5rem" }}>
-              <time dateTime={item._publishedAt}>
-                {new Date(item._publishedAt).toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </time>
-              {item.url ? (
-                <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: "0.25rem" }}>
-                  <strong>{item.title}</strong>
-                </a>
-              ) : (
-                <strong style={{ display: "block", marginTop: "0.25rem" }}>{item.title}</strong>
-              )}
-              {item.excerpt && (
-                <p style={{ margin: "0.25rem 0 0", color: "var(--color-text-muted)", fontSize: "0.95rem" }}>
-                  {item.excerpt}
-                </p>
-              )}
-              {(() => {
-                const preview = contentPreview(item.content);
-                return preview ? (
-                  <p style={{ margin: "0.25rem 0 0", color: "var(--color-text-muted)", fontSize: "0.95rem" }}>
+        <ul className="contentSection press-article-list">
+          {articles.map((item) => {
+            const preview = contentPreview(item.content);
+            return (
+              <li key={item.id} className="press-article">
+                <time dateTime={item._publishedAt}>
+                  {new Date(item._publishedAt).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </time>
+                <strong className="press-article-title">{item.title}</strong>
+                {preview && (
+                  <p className="press-article-preview">
                     {preview}
                   </p>
-                ) : null;
-              })()}
-            </li>
-          ))}
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </>

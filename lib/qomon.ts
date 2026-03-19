@@ -1,4 +1,4 @@
-const QOMON_SERVER = "https://incoming.qomon.app";
+export const QOMON_SERVER = "https://incoming.qomon.app";
 
 export async function getContactsCount(): Promise<number> {
   const url = `${QOMON_SERVER}/search`;

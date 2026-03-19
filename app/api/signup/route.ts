@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const QOMON_SERVER = "https://incoming.qomon.app"
+import { QOMON_SERVER } from "@/lib/qomon";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,14 +10,7 @@ export async function POST(request: NextRequest) {
     const phone = (body.phone ?? "").trim();
     const comment = (body.comment ?? "").trim();
 
-    if (!firstName) {
-      return NextResponse.json(
-        { error: "First name is required" },
-        { status: 400 }
-      );
-    }
-
-    if (!firstName) {
+    if (!firstName && !lastName) {
       return NextResponse.json(
         { error: "Name is required" },
         { status: 400 }
@@ -32,7 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const response = await fetch(`${QOMON_SERVER}/contacts/upsert`, {  // TODO Specify endpoint
+    const response = await fetch(`${QOMON_SERVER}/contacts/upsert`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.QOMON_API_KEY}`,

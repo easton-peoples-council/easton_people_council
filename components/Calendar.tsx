@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-type CalendarEvent = {
-  title: string;
-  start: string;
-  end: string;
-  description: string;
-  location: string;
-};
+import { type CalendarEvent, cleanAndSortEvents } from "@/lib/events";
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
@@ -35,63 +28,50 @@ function formatDateTime(start: string, end: string): string {
 export default function Calendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/events")
-      .then((res) => res.json())
-      .then((data: Array<{ title?: string; description?: string; location?: string; start: string; end: string }>) => {
-        const cleaned = data.map(({ title, description, location, start, end }) => {
-          const cleanTitle = (title ?? "").replace(/\s*\[In-person\]\s*/gi, "").trim() || "Event";
-          const rawDesc = description ?? "";
-          const cleanDesc = rawDesc.replace(/^\s*\[In-person\]\s*\n?/gi, "").trim();
-          return {
-            title: cleanTitle,
-            start,
-            end,
-            description: cleanDesc,
-            location: location ?? "",
-          };
-        });
-        cleaned.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-        setEvents(cleaned);
-      })
-      .finally(() => setLoading(false));
+    async function loadEvents() {
+      try {
+        const res = await fetch("/api/events");
+        const data = res.ok ? await res.json() : [];
+        setEvents(cleanAndSortEvents(Array.isArray(data) ? data : []));
+        setError(null);
+      } catch {
+        setEvents([]);
+        setError("Unable to load events. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadEvents();
   }, []);
-
-  if (loading) {
-    return (
-      <div className="calendar">
-        <p className="calendar-loading">Loading events…</p>
-      </div>
-    );
-  }
-
-  if (events.length === 0) {
-    return (
-      <div className="calendar">
-        <p className="calendar-empty">No upcoming events at the moment. Check back soon.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="calendar">
-      <ul className="calendar-list">
-        {events.map((event, i) => (
-          <li key={i} className="calendar-event">
-            <time className="calendar-event-datetime" dateTime={event.start}>
-              {formatDateTime(event.start, event.end)}
-            </time>
-            <h3 className="calendar-event-title">{event.title}</h3>
-            {event.location && (
-              <p className="calendar-event-meta">{event.location}</p>
-            )}
-            {event.description && (
-              <p className="calendar-event-desc">{event.description}</p>
-            )}
-          </li>
-        ))}
-      </ul>
+      {loading && <p className="calendar-loading">Loading events…</p>}
+      {error && <p className="calendar-error">{error}</p>}
+      {!loading && !error && events.length === 0 && (
+        <p className="calendar-empty">No upcoming events at the moment. Check back soon.</p>
+      )}
+      {!loading && !error && events.length > 0 && (
+        <ul className="calendar-list">
+          {events.map((event, i) => (
+            <li key={i} className="calendar-event">
+              <time className="calendar-event-datetime" dateTime={event.start}>
+                {formatDateTime(event.start, event.end)}
+              </time>
+              <h3 className="calendar-event-title">{event.title}</h3>
+              {event.location && (
+                <p className="calendar-event-meta">{event.location}</p>
+              )}
+              {event.description && (
+                <p className="calendar-event-desc">{event.description}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

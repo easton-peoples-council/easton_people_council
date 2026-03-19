@@ -1,9 +1,21 @@
 export default function RationalePage() {
   return (
     <>
-      <h1 className="pageTitle">Rationale</h1>
+      <section className="contentSection">
+        <h2>The Big Question</h2>
+        <p>
+          Strong, caring communities. Enough food for everyone. A healthy planet. Lives filled with meaning. This is the kind of world we all want. So why don&apos;t we build it?
+        </p>
+      </section>
 
-      <section>
+      <section className="contentSection">
+        <h2>What&apos;s this all about?</h2>
+        <p>
+          Did you know that any community can set up a council...? Peoples Councils give our community new powers to protect what&apos;s already good and build an alternative where we live that actually works for us.
+        </p>
+      </section>
+
+      <section className="contentSection">
         <h2>What could a People&apos;s Council do for Easton?</h2>
 
         <h3>Protect what&apos;s already good</h3>
@@ -18,13 +30,6 @@ export default function RationalePage() {
         <p>Take back public services so they are closer to the people who use them.</p>
 
         <p>+ much more...!</p>
-      </section>
-
-      <section>
-        <h2>Who are you?</h2>
-        <p>
-          The idea was kick-started by a small but growing group of Easton locals who are inspired by the many examples of communities that have built power around the UK. It isn&apos;t backed by any organisations or funders. Please get in touch through the button at the bottom of the page.
-        </p>
       </section>
     </>
   );

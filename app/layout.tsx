@@ -11,21 +11,15 @@ export const metadata: Metadata = {
 };
 
 const navLinks = [
-  { href: "/", label: "Homepage" },
   { href: "/rationale", label: "Rationale" },
   { href: "/proposal", label: "Proposal" },
   ...(SHOW_PETITION ? [{ href: "/petition" as const, label: "Petition" as const }] : []),
   { href: "/press", label: "Press" },
 ] as const;
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head></head>
       <body>
         <header className="siteHeader">
           <div className="headerLogoBlock">
