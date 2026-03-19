@@ -1,4 +1,4 @@
-/** Minimal shape of a VEVENT from node-ical (for typing the ical parse result). */
+/** Min shape of a VEVENT from node-ical (for typing the ical parse result). */
 export type IcalVEvent = {
   type: "VEVENT";
   summary?: string;
