@@ -15,7 +15,7 @@ export type CalendarEvent = {
   location: string;
   start: string;
   end: string;
-}; 
+};
 
 /** Cleans API event data (strip [In-person], normalize empty title) and sorts by start time. */
 export function cleanAndSortEvents(events: CalendarEvent[]): CalendarEvent[] {
