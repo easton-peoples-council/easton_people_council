@@ -1,16 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
 import { QOMON_SERVER } from "@/lib/qomon";
 
+type TurnstileVerifyResponse = {
+  success: boolean;
+  "error-codes"?: string[];
+};
+
+async function verifyTurnstileToken(token: string, remoteIp?: string) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    return { ok: false, error: "Turnstile secret is not configured", status: 500 };
+  }
+
+  const formData = new URLSearchParams({
+    secret,
+    response: token,
+  });
+
+  if (remoteIp) {
+    formData.append("remoteip", remoteIp);
+  }
+
+  const verifyResponse = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData,
+    }
+  );
+
+  if (!verifyResponse.ok) {
+    return { ok: false, error: "Verification service failed", status: 502 };
+  }
+
+  const verifyData = (await verifyResponse.json()) as TurnstileVerifyResponse;
+  if (!verifyData.success) {
+    return {
+      ok: false,
+      error: "Verification failed. Please try again.",
+      status: 400,
+    };
+  }
+
+  return { ok: true };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const firstName = (body.firstName ?? "").trim();
-    const lastName = (body.lastName ?? "").trim();
+    const name = (body.name ?? "").trim();
     const email = (body.email ?? "").trim();
     const phone = (body.phone ?? "").trim();
     const comment = (body.comment ?? "").trim();
+    const turnstileToken = (body.turnstileToken ?? "").trim();
+    const remoteIp =
+      request.headers.get("cf-connecting-ip") ??
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
 
-    if (!firstName && !lastName) {
+    if (!turnstileToken) {
+      return NextResponse.json(
+        { error: "Verification is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!name) {
       return NextResponse.json(
         { error: "Name is required" },
         { status: 400 }
@@ -23,7 +78,15 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
+    const turnstileVerification = await verifyTurnstileToken(turnstileToken, remoteIp);
+    if (!turnstileVerification.ok) {
+      return NextResponse.json(
+        { error: turnstileVerification.error },
+        { status: turnstileVerification.status }
+      );
+    }
+
     const response = await fetch(`${QOMON_SERVER}/contacts/upsert`, {
       method: "POST",
       headers: {
@@ -33,12 +96,12 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         kind: "contact",
         data: {
-          firstname: firstName,
-          surname: lastName,
+          firstname: name,
+          surname: "",
           phone: phone,
           // comment: comment,  / TODO include/allow comments. allow updating of existing contact if there are matches in place
           mail: email,
-          // tags: ["website-signup"],  // TODO Specify tags look up what they mean
+          // tags: ["website-signup"],  // TODO MK Specify tags look up what they mean
         }
       }),
     });
