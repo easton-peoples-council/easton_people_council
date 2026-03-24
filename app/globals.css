@@ -484,6 +484,15 @@ main section p {
   margin-top: 0.75rem;
 }
 
+.proposalCtaSection {
+  padding-top: calc(var(--section-spacing) / 2);
+}
+
+/* Rationale page */
+.rationaleCtaSection {
+  padding-top: 0rem;
+}
+
 /* Footer */
 .siteFooter {
   background: var(--color-primary);

@@ -25,7 +25,7 @@ export default async function ProposalPage() {
         </ul>
         <p>Exactly what it does would be shaped by the people who live here.</p>
       </section>
-      <GetInTouchSection contactsCount={contactsCount} className="contentSection proposalSection" />
+      <GetInTouchSection contactsCount={contactsCount} className="contentSection proposalSection proposalCtaSection" borderTop="none" />
 
       <section className="contentSection proposalSection">
         <h2>FAQs</h2>
