@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
-  description: "Together let's explore what a People's Council could look and feel like for us in Easton.",
+  description: "Let's explore what we can achieve through community power.",
 };
 
 const navLinks = [

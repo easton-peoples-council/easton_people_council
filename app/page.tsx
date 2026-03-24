@@ -17,9 +17,15 @@ export default async function HomePage() {
   return (
     <>
       <section className="hero">
-        <h1 className="heroTitle">Is it time to build community power in Easton?</h1>
+        <h1 className="heroTitle">Who are you?</h1>
         <p className="heroSubtitle">
-          Together let&apos;s explore what a People&apos;s Council could look and feel like for us in Easton!
+          This idea was kick-started by a small group of Easton residents who care about the area and want to explore whether a People’s Council could work here.
+        </p>
+        <p className="heroSubtitle">
+          The project isn’t backed by organisations, funders or political parties. It’s simply a group of locals starting a conversation.
+        </p>
+        <p className="heroSubtitle">
+          Anyone who lives in the area can get involved and help shape what happens next.
         </p>
         {contactsCount !== null && (
           <p className="heroContacts" style={{ marginTop: "1rem", opacity: 0.9 }}>
@@ -32,41 +38,57 @@ export default async function HomePage() {
       </section>
 
       <section className="contentSection">
-        <h2>Who are you?</h2>
+        <h2>How can I get involved?</h2>
         <p>
-          The idea was kick-started by a small but growing group of Easton locals who are inspired by the many examples of communities that have built power around the UK. It isn&apos;t backed by any organisations or funders. Please get in touch through the button at the bottom of the page.
+          There are lots of ways to get involved. Whether you’re just curious or ready to help out.
+        </p>
+        <p>
+          You could come to an info session to learn more, talk about the idea with friends and neighbours, or help with outreach by holding stalls or knocking on doors.
+        </p>
+        <p>Whatever time, skills or experience you have, there’s a place for you.</p>
+        <p>
+          Take a look at our <a href="#calendar" style={{ fontWeight: 700, color: "inherit" }}>calendar</a> to see what events are coming up.
         </p>
       </section>
 
       <section className="contentSection">
-        <h2>What could a People&apos;s Council do for Easton?</h2>
-        <h3>Protect what&apos;s already good</h3>
+        <h2>What&apos;s happening now?</h2>
+        <p>Right now, the focus is simple: talking to as many residents as possible.</p>
+        <p style={{ fontWeight: 600 }}>We want to understand:</p>
         <ul>
-          <li>Create a neighbourhood plan to protect community centres and public spaces from big developers.</li>
-          <li>Support existing community organisations to keep doing amazing work with grants.</li>
-          <li>Represent the community officially to local police and health services.</li>
+          <li>How people feel about the idea</li>
+          <li>What issues matter most locally</li>
+          <li>What a People&apos;s Council should actually focus on</li>
         </ul>
-        <h3>Build the alternative</h3>
+        <p style={{ marginTop: "2rem", fontWeight: 600 }}>We&apos;re doing this by:</p>
         <ul>
-          <li>Make decisions collectively through direct democracy (e.g. through neighbourhood assemblies).</li>
-          <li>Set up cooperative businesses (e.g. energy coops) owned and controlled by us.</li>
-          <li>Reclaim buildings for community use.</li>
-          <li>Take back public services so they are closer to the people who use them.</li>
+          <li>Holding weekly stalls in busy places (every Saturday)</li>
+          <li>Knocking on doors across the neighbourhood (Mondays-Wednesdays)</li>
+          <li>Meeting people from local organisations and community groups</li>
+          <li>Running social events where people can learn more and get involved over food and drinks</li>
         </ul>
-        <p>+ much more...!</p>
-      </section>
-
-      <section className="contentSection">
-        <h2>Tell me more...</h2>
         <p>
-          A Peoples Council is a type of local council, with the same official powers as a Parish, Town, or Village Council. In areas without a parish council, we tend to have less influence over many decisions affecting our lives.
+          Once we&apos;ve spoken with enough residents, we&apos;ll launch a petition to formally start the process.
         </p>
         <p>
-          These councils can manage local spaces and initiatives—such as allotments, sports facilities, and youth projects—and act as a voice for the community in discussions with the police, health services, local planning authorities, developers, and even government bodies and parliamentarians. Importantly, City Councils have a statutory duty to consult with parish councils, giving local people a direct say at the city level, too.
+          Follow our{" "}
+          <a
+            href="https://www.instagram.com/eastonpeoplescouncil/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ fontWeight: 700, color: "inherit" }}
+          >
+            socials
+          </a>{" "}
+          for updates or{" "}
+          <a href="#get-involved" style={{ fontWeight: 700, color: "inherit" }}>
+            pop us a message
+          </a>{" "}
+          to get involved!
         </p>
       </section>
 
-      <section className="contentSection">
+      <section id="calendar" className="contentSection">
         <h2>Come and learn more!</h2>
         <p>
           Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea.
