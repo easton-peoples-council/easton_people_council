@@ -1,13 +1,8 @@
-import { getContactsCount } from "@/lib/qomon";
-import HomeGetInTouchCta from "../HomeGetInTouchCta";
+import { getContactsCountOrNull } from "@/lib/qomon";
+import GetInTouchSection from "../GetInTouchSection";
 
 export default async function RationalePage() {
-  let contactsCount: number | null = null;
-  try {
-    contactsCount = await getContactsCount();
-  } catch (err) {
-    console.error("[rationale/page] getContactsCount failed:", err);
-  }
+  const contactsCount = await getContactsCountOrNull("rationale/page");
 
   return (
     <>
@@ -48,9 +43,7 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <section className="contentSection" style={{ borderTop: "none" }}>
-        <HomeGetInTouchCta contactsCount={contactsCount} ctaClassName="proposalCta" />
-      </section>
+      <GetInTouchSection contactsCount={contactsCount} borderTop="none" />
 
       <section className="contentSection">
         <h2>Tell me more...</h2>

@@ -1,13 +1,8 @@
-import { getContactsCount } from "@/lib/qomon";
-import HomeGetInTouchCta from "../HomeGetInTouchCta";
+import { getContactsCountOrNull } from "@/lib/qomon";
+import GetInTouchSection from "../GetInTouchSection";
 
 export default async function ProposalPage() {
-  let contactsCount: number | null = null;
-  try {
-    contactsCount = await getContactsCount();
-  } catch (err) {
-    console.error("[proposal/page] getContactsCount failed:", err);
-  }
+  const contactsCount = await getContactsCountOrNull("proposal/page");
 
   return (
     <>
@@ -28,11 +23,9 @@ export default async function ProposalPage() {
           <li>Bring empty buildings into community use</li>
           <li>Take on local services where it makes sense to run them closer to the community</li>
         </ul>
-        <p>
-          Exactly what it does would be shaped by the people who live here.
-        </p>
-        <HomeGetInTouchCta contactsCount={contactsCount} ctaClassName="proposalCta" />
+        <p>Exactly what it does would be shaped by the people who live here.</p>
       </section>
+      <GetInTouchSection contactsCount={contactsCount} className="contentSection proposalSection" />
 
       <section className="contentSection proposalSection">
         <h2>FAQs</h2>

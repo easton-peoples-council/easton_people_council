@@ -1,6 +1,6 @@
 import Calendar from "@/components/Calendar";
 import { SHOW_PETITION } from "@/lib/feature-flags";
-import { getContactsCount } from "@/lib/qomon";
+import { getContactsCountOrNull } from "@/lib/qomon";
 import Link from "next/link";
 import HomeGetInTouchCta from "./HomeGetInTouchCta";
 import SignupForm from "./SignupForm";
@@ -8,12 +8,7 @@ import SignupForm from "./SignupForm";
 export const revalidate = 600;
 
 export default async function HomePage() {
-  let contactsCount: number | null = null;
-  try {
-    contactsCount = await getContactsCount();
-  } catch (err) {
-    console.error("[page] getContactsCount failed:", err);
-  }
+  const contactsCount = await getContactsCountOrNull("page");
 
   return (
     <>

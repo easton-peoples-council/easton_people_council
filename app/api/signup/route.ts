@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { QOMON_SERVER } from "@/lib/qomon";
+import { qomonRequest } from "@/lib/qomon";
+import { EMAIL_REGEX, UK_PHONE_LOOSE_REGEX, MAX_COMMENT_LENGTH } from "@/lib/validation";
 
 type TurnstileVerifyResponse = {
   success: boolean;
@@ -79,6 +80,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (email && !EMAIL_REGEX.test(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address" },
+        { status: 400 }
+      );
+    }
+
+    if (phone && !UK_PHONE_LOOSE_REGEX.test(phone)) {
+      return NextResponse.json(
+        { error: "Please enter a valid phone number" },
+        { status: 400 }
+      );
+    }
+
+    if (comment.length > MAX_COMMENT_LENGTH) {
+      return NextResponse.json(
+        { error: `Comment must be ${MAX_COMMENT_LENGTH} characters or fewer` },
+        { status: 400 }
+      );
+    }
+
     const turnstileVerification = await verifyTurnstileToken(turnstileToken, remoteIp);
     if (!turnstileVerification.ok) {
       return NextResponse.json(
@@ -87,12 +109,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${QOMON_SERVER}/contacts/upsert`, {
+    const response = await qomonRequest("/contacts/upsert", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.QOMON_API_KEY}`,
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         kind: "contact",
         data: {

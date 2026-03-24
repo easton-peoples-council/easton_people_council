@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import Script from "next/script";
+import { EMAIL_REGEX, UK_PHONE_LOOSE_REGEX, MAX_COMMENT_LENGTH } from "@/lib/validation";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -64,7 +65,7 @@ function FormField({
     <>
       <label htmlFor={id}>{label}</label>
       {type === "textarea" ? (
-        <textarea {...common} />
+        <textarea {...common} maxLength={MAX_COMMENT_LENGTH} />
       ) : (
         <input type={type} required={required} {...common} />
       )}
@@ -72,12 +73,8 @@ function FormField({
   );
 }
 
-export default function SignupForm() {
-  const [form, setForm] = useState<FormData>(initialForm);
-  const [state, setState] = useState<FormState>("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+function useTurnstileToken() {
   const [turnstileToken, setTurnstileToken] = useState("");
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   useEffect(() => {
     window.onTurnstileSuccess = (token: string) => {
@@ -97,6 +94,16 @@ export default function SignupForm() {
     };
   }, []);
 
+  return { turnstileToken, setTurnstileToken };
+}
+
+export default function SignupForm() {
+  const [form, setForm] = useState<FormData>(initialForm);
+  const [state, setState] = useState<FormState>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { turnstileToken, setTurnstileToken } = useTurnstileToken();
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
   function setField(id: keyof FormData, value: string) {
     setForm((prev) => ({ ...prev, [id]: value }));
   }
@@ -109,6 +116,28 @@ export default function SignupForm() {
       return;
     }
 
+    const trimmedEmail = form.email.trim();
+    const trimmedPhone = form.phone.trim();
+    const trimmedComment = form.comment.trim();
+
+    if (trimmedEmail && !EMAIL_REGEX.test(trimmedEmail)) {
+      setState("error");
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (trimmedPhone && !UK_PHONE_LOOSE_REGEX.test(trimmedPhone)) {
+      setState("error");
+      setErrorMessage("Please enter a valid phone number.");
+      return;
+    }
+
+    if (trimmedComment.length > MAX_COMMENT_LENGTH) {
+      setState("error");
+      setErrorMessage(`Comment must be ${MAX_COMMENT_LENGTH} characters or fewer.`);
+      return;
+    }
+
     setState("submitting");
     setErrorMessage("");
 
@@ -116,7 +145,13 @@ export default function SignupForm() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, turnstileToken }),
+        body: JSON.stringify({
+          ...form,
+          email: trimmedEmail,
+          phone: trimmedPhone,
+          comment: trimmedComment,
+          turnstileToken,
+        }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -138,6 +173,21 @@ export default function SignupForm() {
 
   const disabled = state === "submitting" || !turnstileToken;
 
+  function renderField(field: FormFieldEntry) {
+    return (
+      <FormField
+        key={field.id}
+        id={field.id}
+        label={field.label}
+        type={field.type}
+        value={form[field.id]}
+        onChange={(value) => setField(field.id, value)}
+        disabled={state === "submitting"}
+        required={field.required}
+      />
+    );
+  }
+
   return (
     <>
       <Script
@@ -147,18 +197,7 @@ export default function SignupForm() {
       />
 
       <form className="signupForm" onSubmit={handleSubmit}>
-        {FORM_FIELDS.map((f) => (
-          <FormField
-            key={f.id}
-            id={f.id}
-            label={f.label}
-            type={f.type}
-            value={form[f.id]}
-            onChange={(v) => setField(f.id, v)}
-            disabled={state === "submitting"}
-            required={f.required}
-          />
-        ))}
+        {FORM_FIELDS.map(renderField)}
 
         {turnstileSiteKey ? (
           <div
