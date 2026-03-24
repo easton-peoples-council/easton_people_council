@@ -19,7 +19,7 @@ export default async function HomePage() {
       <section className="hero">
         <h1 className="heroTitle">Who are you?</h1>
         <p className="heroSubtitle">
-          This idea was kick-started by a small group of Easton residents who care about the area and want to explore whether a People’s Council could work here.
+          This idea was kick-started by a group of Easton residents who care about the area and want to explore whether a People’s Council could work here.
         </p>
         <p className="heroSubtitle">
           The project isn’t backed by organisations, funders or political parties. It’s simply a group of locals starting a conversation.
