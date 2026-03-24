@@ -3,11 +3,12 @@ import { SHOW_PETITION } from "@/lib/feature-flags";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import HeaderNav from "./HeaderNav";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
-  description: "Together let's explore what a People's Council could look and feel like for us in Easton.",
+  description: "Let's explore what we can achieve through community power.",
 };
 
 const navLinks = [
@@ -38,13 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           <div className="headerNavBar">
             <div className="container">
-              <nav>
-                {navLinks.map(({ href, label }) => (
-                  <Link key={href} href={href}>
-                    {label}
-                  </Link>
-                ))}
-              </nav>
+              <HeaderNav links={navLinks} />
             </div>
           </div>
         </header>

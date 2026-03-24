@@ -2,7 +2,7 @@ import ical from "node-ical";
 import { type IcalVEvent, type CalendarEvent } from "@/lib/events";
 
 export const runtime = 'nodejs';
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 function toIso(v: unknown): string {
   if (v instanceof Date && !isNaN(v.getTime())) return v.toISOString();
