@@ -164,6 +164,7 @@ export default function SignupForm() {
           <div
             className="cf-turnstile"
             data-sitekey={turnstileSiteKey}
+            data-appearance="interaction-only"
             data-callback="onTurnstileSuccess"
             data-expired-callback="onTurnstileExpired"
             data-error-callback="onTurnstileError"
