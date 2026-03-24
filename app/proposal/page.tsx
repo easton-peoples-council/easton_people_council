@@ -1,4 +1,14 @@
-export default function ProposalPage() {
+import { getContactsCount } from "@/lib/qomon";
+import HomeGetInTouchCta from "../HomeGetInTouchCta";
+
+export default async function ProposalPage() {
+  let contactsCount: number | null = null;
+  try {
+    contactsCount = await getContactsCount();
+  } catch (err) {
+    console.error("[proposal/page] getContactsCount failed:", err);
+  }
+
   return (
     <>
       <section className="contentSection proposalSection">
@@ -21,9 +31,7 @@ export default function ProposalPage() {
         <p>
           Exactly what it does would be shaped by the people who live here.
         </p>
-        <a href="/#get-involved" className="heroCta proposalCta">
-          Get in touch
-        </a>
+        <HomeGetInTouchCta contactsCount={contactsCount} ctaClassName="proposalCta" />
       </section>
 
       <section className="contentSection proposalSection">

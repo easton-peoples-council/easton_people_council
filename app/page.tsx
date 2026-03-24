@@ -1,10 +1,11 @@
-import SignupForm from "./SignupForm";
-import Link from "next/link";
-import { getContactsCount } from "@/lib/qomon";
-import { SHOW_PETITION } from "@/lib/feature-flags";
 import Calendar from "@/components/Calendar";
+import { SHOW_PETITION } from "@/lib/feature-flags";
+import { getContactsCount } from "@/lib/qomon";
+import Link from "next/link";
+import HomeGetInTouchCta from "./HomeGetInTouchCta";
+import SignupForm from "./SignupForm";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 export default async function HomePage() {
   let contactsCount: number | null = null;
@@ -17,24 +18,17 @@ export default async function HomePage() {
   return (
     <>
       <section className="hero">
-        <h1 className="heroTitle">Who are you?</h1>
+        <h1 className="heroTitle">Who are we?</h1>
         <p className="heroSubtitle">
           This idea was kick-started by a group of Easton residents who care about the area and want to explore whether a People’s Council could work here.
         </p>
         <p className="heroSubtitle">
           The project isn’t backed by organisations, funders or political parties. It’s simply a group of locals starting a conversation.
         </p>
+        <HomeGetInTouchCta contactsCount={contactsCount} />
         <p className="heroSubtitle">
           Anyone who lives in the area can get involved and help shape what happens next.
         </p>
-        {contactsCount !== null && (
-          <p className="heroContacts" style={{ marginTop: "1rem", opacity: 0.9 }}>
-            {contactsCount} {contactsCount === 1 ? "person has" : "people have"} already signed up!
-          </p>
-        )}
-        <a href="#get-involved" className="heroCta">
-          Get in touch
-        </a>
       </section>
 
       <section className="contentSection">
@@ -49,6 +43,19 @@ export default async function HomePage() {
         <p>
           Take a look at our <a href="#calendar" style={{ fontWeight: 700, color: "inherit" }}>calendar</a> to see what events are coming up.
         </p>
+      </section>
+
+      <section id="get-involved" className="getInvolved">
+        <h2>Get Involved Today!</h2>
+        <p className="intro">
+          Hear more, help organise, or just say hi!
+        </p>
+        <SignupForm />
+        {SHOW_PETITION && (
+          <p style={{ marginTop: "1rem" }}>
+            Or <Link href="/petition">view the petition</Link>.
+          </p>
+        )}
       </section>
 
       <section className="contentSection">
@@ -96,19 +103,6 @@ export default async function HomePage() {
         <div className="calendarFullWidth">
           <Calendar />
         </div>
-      </section>
-
-      <section id="get-involved" className="getInvolved">
-        <h2>Get Involved Today!</h2>
-        <p className="intro">
-          Hear more, help organise, or just say hi!
-        </p>
-        <SignupForm />
-        {SHOW_PETITION && (
-          <p style={{ marginTop: "1rem" }}>
-            Or <Link href="/petition">view the petition</Link>.
-          </p>
-        )}
       </section>
     </>
   );

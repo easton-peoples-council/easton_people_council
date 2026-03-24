@@ -1,4 +1,14 @@
-export default function RationalePage() {
+import { getContactsCount } from "@/lib/qomon";
+import HomeGetInTouchCta from "../HomeGetInTouchCta";
+
+export default async function RationalePage() {
+  let contactsCount: number | null = null;
+  try {
+    contactsCount = await getContactsCount();
+  } catch (err) {
+    console.error("[rationale/page] getContactsCount failed:", err);
+  }
+
   return (
     <>
       <section className="contentSection">
@@ -36,6 +46,10 @@ export default function RationalePage() {
           A People&apos;s Council is one way to bring some of that power closer to home. It gives residents a way to work
           together on practical problems while also thinking about new ideas for the future of Easton.
         </p>
+      </section>
+
+      <section className="contentSection" style={{ borderTop: "none" }}>
+        <HomeGetInTouchCta contactsCount={contactsCount} ctaClassName="proposalCta" />
       </section>
 
       <section className="contentSection">

@@ -1,4 +1,6 @@
 import { datoClient, datoPreviewClient } from "@/lib/datocms";
+import { getContactsCount } from "@/lib/qomon";
+import HomeGetInTouchCta from "../HomeGetInTouchCta";
 
 function getGraphQLErrors(error: unknown): unknown[] | undefined {
   if (error == null || typeof error !== "object" || !("response" in error)) return undefined;
@@ -77,12 +79,18 @@ export default async function PressPage({ searchParams }: Props) {
   const client = isPreview ? datoPreviewClient : datoClient;
 
   let articles: Article[] = [];
+  let contactsCount: number | null = null;
   try {
     const data = await client.request<ArticlesData>(ARTICLES_QUERY);
     articles = data?.allArticles ?? [];
   } catch (error) {
     const graphqlErrors = getGraphQLErrors(error);
     console.error("[Press] DatoCMS fetch failed", graphqlErrors ?? error);
+  }
+  try {
+    contactsCount = await getContactsCount();
+  } catch (err) {
+    console.error("[press/page] getContactsCount failed:", err);
   }
 
   return (
@@ -121,6 +129,10 @@ export default async function PressPage({ searchParams }: Props) {
           })}
         </ul>
       )}
+      <section className="contentSection">
+        <p>Want to contibute with your thoughts and stories about easton?</p>
+        <HomeGetInTouchCta contactsCount={contactsCount} ctaClassName="proposalCta" />
+      </section>
     </>
   );
 }
