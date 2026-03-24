@@ -43,7 +43,7 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <GetInTouchSection contactsCount={contactsCount} borderTop="none" />
+      <GetInTouchSection contactsCount={contactsCount} className="contentSection rationaleCtaSection" borderTop="none" />
 
       <section className="contentSection">
         <h2>Tell me more...</h2>
