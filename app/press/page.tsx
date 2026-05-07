@@ -11,8 +11,10 @@ function getGraphQLErrors(error: unknown): unknown[] | undefined {
 /**
  * Query matches a DatoCMS model with API id "article".
  * Adjust the query and fields to match DatoCMS schema.
+ *
+ * // url_identifier is not used in the query? MK TODO
  */  
-// url_identifier is not used in the query? MK TODO
+
 const ARTICLES_QUERY = `
   query PressPage {
     allArticles(orderBy: _publishedAt_DESC, first: 50) {
