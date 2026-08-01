@@ -17,7 +17,7 @@ export type CalendarEvent = {
   end: string;
 };
 
-/** Cleans API event data (strip [In-person], normalize empty title) and sorts by start time. */
+/** Cleans API event data (strip [In-person], normalize empty title), sorts by start, keeps today+, max 3. */
 export function cleanAndSortEvents(events: CalendarEvent[]): CalendarEvent[] {
   const cleaned = events
     .filter((e) => e?.start && !isNaN(Date.parse(e.start)))
@@ -34,5 +34,9 @@ export function cleanAndSortEvents(events: CalendarEvent[]): CalendarEvent[] {
     };
   });
   cleaned.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-  return cleaned;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  return cleaned
+    .filter((e) => new Date(e.start).getTime() >= startOfToday.getTime())
+    .slice(0, 3);
 }
