@@ -3,7 +3,7 @@ import { GraphQLClient } from "graphql-request";
 /**
  * DatoCMS GraphQL clients for Easton People Council.
  *
- * ## Published content (production)
+ * ## Published content (production) 
  * Use `datoClient` for live, published content. It talks to the main API and
  * only returns records that are published in DatoCMS.
  *
