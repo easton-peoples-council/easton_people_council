@@ -9,6 +9,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "A People's Council for Easton",
   description: "Let's explore what we can achieve through community power.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 const navLinks = [
