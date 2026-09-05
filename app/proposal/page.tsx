@@ -1,8 +1,11 @@
+import InstagramStrip from "@/components/InstagramStrip";
+import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
 import GetInTouchSection from "../GetInTouchSection";
 
 export default async function ProposalPage() {
   const contactsCount = await getContactsCountOrNull("proposal/page");
+  const posts = await getInstagramPosts();
 
   return (
     <>
@@ -26,6 +29,8 @@ export default async function ProposalPage() {
         <p>Exactly what it does would be shaped by the people who live here.</p>
       </section>
       <GetInTouchSection contactsCount={contactsCount} className="contentSection proposalSection proposalCtaSection" borderTop="none" />
+
+      <InstagramStrip posts={posts} offset={0} />
 
       <section className="contentSection proposalSection">
         <h2>FAQs</h2>
