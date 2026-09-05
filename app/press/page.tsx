@@ -1,4 +1,6 @@
+import InstagramStrip from "@/components/InstagramStrip";
 import { datoClient, datoPreviewClient } from "@/lib/datocms";
+import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
 import GetInTouchSection from "../GetInTouchSection";
 
@@ -82,6 +84,7 @@ export default async function PressPage({ searchParams }: Props) {
 
   let articles: Article[] = [];
   const contactsCount = await getContactsCountOrNull("press/page");
+  const posts = await getInstagramPosts();
   try {
     const data = await client.request<ArticlesData>(ARTICLES_QUERY);
     articles = data?.allArticles ?? [];
@@ -126,6 +129,7 @@ export default async function PressPage({ searchParams }: Props) {
           })}
         </ul>
       )}
+      <InstagramStrip posts={posts} offset={0} />
       <GetInTouchSection
         contactsCount={contactsCount}
         text="Want to contibute with your thoughts and stories about easton?"

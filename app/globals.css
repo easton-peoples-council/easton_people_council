@@ -74,6 +74,11 @@ body {
   letter-spacing: 0.02em;
   color: var(--color-text);
   background: var(--color-bg);
+  /* Full-bleed children (.igStrip, .calendarFullWidth) are 100vw, which counts
+     the scrollbar and so overhangs the layout width by its ~15px. clip absorbs
+     that; unlike hidden it creates no scroll container, so scroll-behavior:
+     smooth and the #calendar / #get-involved anchors keep working. */
+  overflow-x: clip;
 }
 
 main {
@@ -642,4 +647,27 @@ main section p {
   background: var(--color-accent);
   border-radius: var(--radius);
   white-space: pre-wrap;
+}
+
+/* Instagram strips */
+.igStrip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.igStrip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* A strip stands in for the divider, so the section below drops its own rule. */
+.igStrip + .contentSection,
+.igStrip + .getInvolved {
+  border-top: none;
 }
