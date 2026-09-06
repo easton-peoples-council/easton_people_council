@@ -34,6 +34,15 @@ declare global {
     onTurnstileError?: () => void;
     turnstile?: {
       reset: () => void;
+      render: (
+        el: HTMLElement,
+        options: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "expired-callback": () => void;
+          "error-callback": () => void;
+        }
+      ) => string;
     };
   }
 }

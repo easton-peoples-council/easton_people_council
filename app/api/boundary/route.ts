@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { insertBoundary } from "@/lib/db";
 import { qomonRequest } from "@/lib/qomon";
 import { EMAIL_REGEX, verifyTurnstileToken } from "@/lib/validation";
 
 // Easton sits inside this box. Anything drawn outside it is not a proposal
 // for Easton's boundary.
 const BRISTOL_BBOX = { minLng: -2.75, maxLng: -2.4, minLat: 51.38, maxLat: 51.55 };
-const MAX_VERTICES = 200;
+
+// Not a cap on how detailed a boundary may be — a bound on what an
+// unauthenticated endpoint will accept.
+const MAX_VERTICES = 2000;
 
 type Ring = [number, number][];
 
@@ -40,20 +44,42 @@ function parseRing(input: unknown): Ring | string {
     ) {
       return "The boundary must be drawn around Easton";
     }
-    // 5dp is about a metre — plenty for a neighbourhood boundary, and keeps
-    // the string short enough to sit in a Qomon custom field.
-    ring.push([Number(lng.toFixed(5)), Number(lat.toFixed(5))]);
+    // 5dp is about a metre — plenty for a neighbourhood boundary.
+    const rounded: [number, number] = [
+      Number(lng.toFixed(5)),
+      Number(lat.toFixed(5)),
+    ];
+    // Geoman emits a duplicate point on the finishing double-click. Compare
+    // after rounding, so near-identical clicks collapse too.
+    const previous = ring[ring.length - 1];
+    if (previous && previous[0] === rounded[0] && previous[1] === rounded[1]) {
+      continue;
+    }
+    ring.push(rounded);
+  }
+
+  if (ring.length < 3) {
+    return "A boundary needs at least three points";
   }
 
   return ring;
+}
+
+/** Leaflet hands back an open ring; a GeoJSON LinearRing must be closed. */
+function toPolygon(ring: Ring) {
+  const first = ring[0];
+  const last = ring[ring.length - 1];
+  const closed =
+    first[0] === last[0] && first[1] === last[1] ? ring : [...ring, first];
+
+  return { type: "Polygon" as const, coordinates: [closed] };
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const name = (body.name ?? "").trim();
-    const email = (body.email ?? "").trim();
-    const postcode = (body.postcode ?? "").trim();
+    const email = (body.email ?? "").trim().toLowerCase();
     const turnstileToken = (body.turnstileToken ?? "").trim();
     const remoteIp =
       request.headers.get("cf-connecting-ip") ??
@@ -79,14 +105,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: ring }, { status: 400 });
     }
 
-    const fieldId = Number(process.env.QOMON_BOUNDARY_FIELD_ID);
-    if (!fieldId) {
-      return NextResponse.json(
-        { error: "Boundary submissions are not configured" },
-        { status: 500 }
-      );
-    }
-
     const turnstileVerification = await verifyTurnstileToken(turnstileToken, remoteIp);
     if (!turnstileVerification.ok) {
       return NextResponse.json(
@@ -95,6 +113,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // The geometry is the part that cannot be collected again, so it is
+    // written first and its failure is the only one the resident sees.
+    await insertBoundary({
+      name,
+      email,
+      geometry: toPolygon(ring),
+      pointCount: ring.length,
+    });
+
+    // Qomon keeps the campaign's contact list. The custom field is a plain
+    // marker so the campaign can segment on it; it needs a paid Qomon tier,
+    // so the submission does not depend on it being configured.
+    const fieldId = Number(process.env.QOMON_BOUNDARY_FIELD_ID);
     const response = await qomonRequest("/contacts/upsert", {
       method: "POST",
       body: JSON.stringify({
@@ -103,15 +134,13 @@ export async function POST(request: NextRequest) {
           firstname: name,
           surname: "",
           mail: email,
-          ...(postcode && { address: { postalcode: postcode } }),
-          custom_fields: [{ id: fieldId, value: JSON.stringify(ring) }],
+          ...(fieldId && { custom_fields: [{ id: fieldId, value: "yes" }] }),
         },
       }),
     });
 
     if (!response.ok) {
       console.error("Qomon error:", await response.text());
-      return NextResponse.json({ error: "Failed to save boundary" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true }, { status: 200 });

@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, FormEvent } from "react";
 import Script from "next/script";
-import "leaflet/dist/leaflet.css";
-import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 import { EMAIL_REGEX } from "@/lib/validation";
 
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -12,31 +10,35 @@ const EASTON_CENTRE: [number, number] = [51.4653, -2.562];
 
 export default function BoundaryMap() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | undefined>(undefined);
   const [boundary, setBoundary] = useState<[number, number][] | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [postcode, setPostcode] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
-  useEffect(() => {
-    window.onTurnstileSuccess = (token: string) => setTurnstileToken(token);
-    window.onTurnstileExpired = () => setTurnstileToken("");
-    window.onTurnstileError = () => setTurnstileToken("");
-
-    return () => {
-      delete window.onTurnstileSuccess;
-      delete window.onTurnstileExpired;
-      delete window.onTurnstileError;
-    };
-  }, []);
+  // next/script dedupes by src, so arriving here via a nav link does not
+  // re-run api.js and its auto-render pass never sees this widget. Render it
+  // explicitly instead. onReady fires on mount even when the script already
+  // loaded; onLoad does not.
+  const renderTurnstile = useCallback(() => {
+    if (!turnstileRef.current || !turnstileSiteKey || widgetId.current) return;
+    widgetId.current = window.turnstile?.render(turnstileRef.current, {
+      sitekey: turnstileSiteKey,
+      callback: (token: string) => setTurnstileToken(token),
+      "expired-callback": () => setTurnstileToken(""),
+      "error-callback": () => setTurnstileToken(""),
+    });
+  }, [turnstileSiteKey]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    let cancelled = false;
     let map: import("leaflet").Map | undefined;
 
     // Leaflet and Geoman both touch `window` on import, so they load here
@@ -44,6 +46,11 @@ export default function BoundaryMap() {
     (async () => {
       const L = (await import("leaflet")).default;
       await import("@geoman-io/leaflet-geoman-free");
+
+      // The cleanup may have run while the imports were in flight. Without
+      // this, a remount calls L.map() twice on the same node and Leaflet
+      // throws "Map container is already initialized".
+      if (cancelled) return;
 
       map = L.map(container).setView(EASTON_CENTRE, 14);
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -82,10 +89,14 @@ export default function BoundaryMap() {
         e.layer.on("pm:edit", () => readLayer(e.layer));
       });
 
-      map.on("pm:remove", () => setBoundary(null));
+      map.on("pm:remove", () => {
+        drawn = undefined;
+        setBoundary(null);
+      });
     })();
 
     return () => {
+      cancelled = true;
       map?.remove();
     };
   }, []);
@@ -114,7 +125,6 @@ export default function BoundaryMap() {
         body: JSON.stringify({
           name: name.trim(),
           email: email.trim(),
-          postcode: postcode.trim(),
           boundary,
           turnstileToken,
         }),
@@ -138,7 +148,13 @@ export default function BoundaryMap() {
 
   return (
     <>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+      {/* Same src as SignupForm so next/script loads api.js once, not twice.
+          The auto-render pass only looks for .cf-turnstile, which this
+          widget's container deliberately is not. */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        onReady={renderTurnstile}
+      />
 
       <div ref={containerRef} className="boundaryMap" />
 
@@ -169,23 +185,8 @@ export default function BoundaryMap() {
           disabled={state === "submitting"}
         />
 
-        <label htmlFor="boundary-postcode">Postcode</label>
-        <input
-          id="boundary-postcode"
-          type="text"
-          value={postcode}
-          onChange={(e) => setPostcode(e.target.value)}
-          disabled={state === "submitting"}
-        />
-
         {turnstileSiteKey ? (
-          <div
-            className="cf-turnstile"
-            data-sitekey={turnstileSiteKey}
-            data-callback="onTurnstileSuccess"
-            data-expired-callback="onTurnstileExpired"
-            data-error-callback="onTurnstileError"
-          />
+          <div ref={turnstileRef} />
         ) : (
           <p className="formMessage error">
             Verification is currently unavailable. Please try again later.
