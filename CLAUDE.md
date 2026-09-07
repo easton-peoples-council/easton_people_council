@@ -11,10 +11,11 @@ Easton, Bristol. Next.js 14 App Router · React 18 · TypeScript strict · plain
 ## Commands
 
 ```bash
-npm install    # NOT npm ci — package-lock.json is stale, missing the Leaflet stack
-npm run dev    # localhost:3000
+npm install         # NOT npm ci — package-lock.json is stale, missing the Leaflet stack
+npm run dev         # localhost:3000
 npm run build
 npm start
+npm run db:schema   # apply db/schema.sql to DATABASE_URL (idempotent)
 ```
 
 `npm run lint` is **declared but broken** — `eslint` and `eslint-config-next` are
@@ -42,10 +43,19 @@ directory the nearest similar component uses rather than trying to derive one.
 
 ## The thing to know first
 
-**There is no database.** Qomon (`https://incoming.qomon.app`) is the system of
-record for people; DatoCMS holds press articles; an iCal feed holds events. The
-app owns no persistent state, so there is nothing to migrate and no local data —
-exercising a form end to end requires live API credentials.
+**Almost nothing is stored here.** Qomon (`https://incoming.qomon.app`) is the
+system of record for people; DatoCMS holds press articles; an iCal feed holds
+events. Exercising a form end to end requires live API credentials.
+
+The one exception is **Neon** (Postgres), which stores the polygons drawn on
+`/map` and nothing else — `lib/db.ts`, schema in `db/schema.sql`. There is no
+ORM and no migration tool: the schema file is idempotent and applied by hand
+with `npm run db:schema` (psql is not a prerequisite).
+
+**Neon holds no personal data.** Names and emails from the `/map` form go to
+Qomon only, on the same payload shape `app/api/signup/route.ts` uses. Keep it
+that way: the polygons are public at `GET /api/boundary/geojson`, and they are
+publishable precisely because nothing links one to a person.
 
 ## Gotchas
 
@@ -55,13 +65,20 @@ exercising a form end to end requires live API credentials.
 - **`node-ical` cannot run on the Edge runtime.** `app/api/events/route.ts` pins
   `runtime = 'nodejs'` and `next.config.js` lists it in
   `serverComponentsExternalPackages`. Don't remove either.
-- **Seven env vars, all fail soft.** A missing key degrades a feature silently
-  rather than erroring — see `.env.example` for which does what.
+- **`.env.development` is committed and overrides `.env` under `next dev`.** It
+  carries Cloudflare's Turnstile test keys, because the real widget key rejects
+  `localhost` with error 110200 and leaves the submit button dead. Both keys
+  switch together; don't split them across files.
+- **Eight env vars; seven fail soft.** A missing key degrades a feature silently
+  rather than erroring — see `.env.example` for which does what. `DATABASE_URL`
+  is the exception: without it `/map` 500s on submit and the drawn boundary,
+  which exists nowhere else, is lost.
 - **`@fullcalendar/*` is installed but unused.** The calendar is a hand-rolled
   `<ul>` in `components/Calendar.tsx`. Don't import FullCalendar.
 - **`SHOW_PETITION` in `lib/feature-flags.ts` is `false`,** which both hides the
   nav link and makes `/petition` redirect to `/`.
-- **`/boundary` is not in the nav** and is reachable only by direct URL.
+- **`/map` is not in the nav** and is reachable only by direct URL. (It was
+  `/boundary` until `42532b4`; the route handler is still `app/api/boundary/`.)
 
 ## Conventions
 

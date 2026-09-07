@@ -114,17 +114,17 @@ export async function POST(request: NextRequest) {
     }
 
     // The geometry is the part that cannot be collected again, so it is
-    // written first and its failure is the only one the resident sees.
+    // written first and its failure is the only one the resident sees. It goes
+    // in on its own: nothing in this table identifies who drew it.
     await insertBoundary({
-      name,
-      email,
       geometry: toPolygon(ring),
       pointCount: ring.length,
     });
 
-    // Qomon keeps the campaign's contact list. The custom field is a plain
-    // marker so the campaign can segment on it; it needs a paid Qomon tier,
-    // so the submission does not depend on it being configured.
+    // Qomon is the only place the resident's details are kept, so the payload
+    // matches app/api/signup/route.ts field for field. The custom field is a
+    // plain marker so the campaign can segment on it; it needs a paid Qomon
+    // tier, so the submission does not depend on it being configured.
     const fieldId = Number(process.env.QOMON_BOUNDARY_FIELD_ID);
     const response = await qomonRequest("/contacts/upsert", {
       method: "POST",
@@ -141,6 +141,18 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       console.error("Qomon error:", await response.text());
+      // The boundary is already stored, so this is not a failed submission and
+      // must not invite a resubmit — that would duplicate the geometry. Say so
+      // plainly instead: the contact details are the part that was lost, and
+      // since they are no longer written anywhere else they are gone.
+      return NextResponse.json(
+        {
+          success: true,
+          warning:
+            "Your boundary has been saved, but we could not record your contact details. Please get in touch if you would like to hear more.",
+        },
+        { status: 200 }
+      );
     }
 
     return NextResponse.json({ success: true }, { status: 200 });

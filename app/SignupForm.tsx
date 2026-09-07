@@ -34,15 +34,17 @@ declare global {
     onTurnstileError?: () => void;
     turnstile?: {
       reset: () => void;
+      // Cloudflare passes a numeric error code as a string, and render()
+      // returns undefined when the widget fails to mount.
       render: (
         el: HTMLElement,
         options: {
           sitekey: string;
           callback: (token: string) => void;
           "expired-callback": () => void;
-          "error-callback": () => void;
+          "error-callback": (code?: string) => void;
         }
-      ) => string;
+      ) => string | undefined;
     };
   }
 }
