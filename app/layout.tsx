@@ -18,6 +18,7 @@ const navLinks = [
   { href: "/rationale", label: "Rationale" },
   { href: "/proposal", label: "Proposal" },
   ...(SHOW_PETITION ? [{ href: "/petition" as const, label: "Petition" as const }] : []),
+  { href: "/map", label: "Easton Map" },
   { href: "/press", label: "Press" },
 ] as const;
 

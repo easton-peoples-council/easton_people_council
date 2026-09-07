@@ -128,7 +128,7 @@ export default async function PressPage({ searchParams }: Props) {
       )}
       <GetInTouchSection
         contactsCount={contactsCount}
-        text="Want to contibute with your thoughts and stories about easton?"
+        text="Want to contribute with your thoughts and stories about Easton?"
       />
     </>
   );

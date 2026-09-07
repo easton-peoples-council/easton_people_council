@@ -1,3 +1,5 @@
+@import "leaflet/dist/leaflet.css";
+@import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
 /* Easton Community Council style – warm, readable, community-focused */
 
 /* Add your .woff2 / .woff files to public/fonts/ to load these fonts */
@@ -642,4 +644,77 @@ main section p {
   background: var(--color-accent);
   border-radius: var(--radius);
   white-space: pre-wrap;
+}
+
+.boundaryMap {
+  height: 480px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.boundaryHint {
+  margin: 0 0 0.5rem;
+  color: var(--color-text-muted);
+}
+
+
+/* Read-only heatmap of submitted boundaries. Shorter than the drawing map —
+   it is there to be glanced at, not worked in. */
+.boundaryHeatmap {
+  height: 360px;
+  margin-bottom: 1.5rem;
+}
+
+
+.submissionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.submissionList li {
+  margin: 0 0 0.5rem;
+}
+
+/* One row per submission. A button, not a div — it drives the map above and
+   has to be reachable from the keyboard. */
+.submissionRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font: inherit;
+  text-align: left;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.submissionRow:hover {
+  border-color: var(--color-accent);
+}
+
+.submissionRow.selected {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.submissionDate {
+  font-weight: 600;
+}
+
+.submissionMeta {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.submissionAction {
+  margin-left: auto;
+  color: var(--color-accent);
+  font-size: 0.875rem;
 }
