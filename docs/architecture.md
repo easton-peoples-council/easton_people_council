@@ -121,7 +121,7 @@ components — `app/page.tsx`, `rationale`, `proposal` and `press` — and rende
 | `/proposal` | `app/proposal/page.tsx` | In nav. Static copy + FAQs |
 | `/press` | `app/press/page.tsx` | In nav. DatoCMS articles; `?preview=1` shows drafts |
 | `/petition` | `app/petition/page.tsx` | **Hidden** — `SHOW_PETITION` is false, so it redirects to `/` |
-| `/boundary` | `app/boundary/page.tsx` | **Not linked from anywhere** — direct URL only |
+| `/map` | `app/map/page.tsx` | In nav as "Easton Map". Draw-a-boundary form plus the `BoundarySubmissions` consensus view |
 
 Nav is built in `app/layout.tsx:17`; active state is resolved client-side in
 `app/HeaderNav.tsx`.

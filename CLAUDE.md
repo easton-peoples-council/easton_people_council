@@ -11,7 +11,7 @@ Easton, Bristol. Next.js 14 App Router · React 18 · TypeScript strict · plain
 ## Commands
 
 ```bash
-npm install         # NOT npm ci — package-lock.json is stale, missing the Leaflet stack
+npm ci              # or npm install
 npm run dev         # localhost:3000
 npm run build
 npm start
@@ -69,7 +69,7 @@ publishable precisely because nothing links one to a person.
   carries Cloudflare's Turnstile test keys, because the real widget key rejects
   `localhost` with error 110200 and leaves the submit button dead. Both keys
   switch together; don't split them across files.
-- **Eight env vars; seven fail soft.** A missing key degrades a feature silently
+- **Nine env vars; eight fail soft.** A missing key degrades a feature silently
   rather than erroring — see `.env.example` for which does what. `DATABASE_URL`
   is the exception: without it `/map` 500s on submit and the drawn boundary,
   which exists nowhere else, is lost.
@@ -77,8 +77,8 @@ publishable precisely because nothing links one to a person.
   `<ul>` in `components/Calendar.tsx`. Don't import FullCalendar.
 - **`SHOW_PETITION` in `lib/feature-flags.ts` is `false`,** which both hides the
   nav link and makes `/petition` redirect to `/`.
-- **`/map` is not in the nav** and is reachable only by direct URL. (It was
-  `/boundary` until `42532b4`; the route handler is still `app/api/boundary/`.)
+- **`/map` is in the nav as "Easton Map",** but its route handler lives at
+  `app/api/boundary/` — the page and its API are named differently.
 
 ## Conventions
 

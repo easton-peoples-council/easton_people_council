@@ -651,6 +651,28 @@ main section p {
   white-space: pre-wrap;
 }
 
+.igStrip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.igStrip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* A strip stands in for the divider, so the section below drops its own rule. */
+.igStrip + .contentSection,
+.igStrip + .getInvolved {
+  border-top: none;
+}
+
 .boundaryMap {
   height: 480px;
   margin-bottom: 1.5rem;
