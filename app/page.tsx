@@ -1,5 +1,7 @@
 import Calendar from "@/components/Calendar";
+import InstagramStrip from "@/components/InstagramStrip";
 import { SHOW_PETITION } from "@/lib/feature-flags";
+import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
 import Link from "next/link";
 import HomeGetInTouchCta from "./HomeGetInTouchCta";
@@ -9,6 +11,7 @@ export const revalidate = 600;
 
 export default async function HomePage() {
   const contactsCount = await getContactsCountOrNull("page");
+  const posts = await getInstagramPosts();
 
   return (
     <>
@@ -26,6 +29,8 @@ export default async function HomePage() {
         </p>
       </section>
 
+      <InstagramStrip posts={posts} offset={0} />
+
       <section className="contentSection">
         <h2>How can I get involved?</h2>
         <p>
@@ -40,6 +45,8 @@ export default async function HomePage() {
         </p>
       </section>
 
+      <InstagramStrip posts={posts} offset={3} />
+
       <section id="get-involved" className="getInvolved">
         <h2>Get Involved Today!</h2>
         <p className="intro">
@@ -52,6 +59,8 @@ export default async function HomePage() {
           </p>
         )}
       </section>
+
+      <InstagramStrip posts={posts} offset={6} />
 
       <section className="contentSection">
         <h2>What&apos;s happening now?</h2>
@@ -89,6 +98,8 @@ export default async function HomePage() {
           to get involved!
         </p>
       </section>
+
+      <InstagramStrip posts={posts} offset={9} />
 
       <section id="calendar" className="contentSection">
         <h2>Come and learn more!</h2>

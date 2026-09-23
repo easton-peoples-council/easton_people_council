@@ -1,6 +1,6 @@
 # Current Work
 
-**Last updated: 2026-09-06** (branch `interactive-map`, HEAD `ce51fac`)
+**Last updated: 2026-09-09** (branch `instagram-embed`, HEAD `0d1ec45`)
 
 > Refresh this file when a branch merges or a gap closes. A quick way to check
 > whether it's stale: `git log --oneline origin/main..HEAD` and
@@ -8,9 +8,9 @@
 
 ## In flight
 
-### Boundary drawing map — unmerged
+### Boundary drawing map — on `main`
 
-The newest feature, three commits ahead of `origin/main`.
+Merged as `Interactive map (#15)`, and present in this branch.
 
 Adds `/map` (moved from `/boundary` in `42532b4`), `components/BoundaryMap.tsx`,
 `app/api/boundary/route.ts`, and extracts shared validation into
@@ -30,9 +30,8 @@ Before it can ship:
   losing the drawn boundary. Local `.env` is set and the schema is applied
   (verified 2026-09-06: table, both indexes and both check constraints present,
   round-trip insert confirmed).
-- **`/map` has no nav link** — it isn't in `navLinks` (`app/layout.tsx:17`) and
-  nothing links to it, so it's undiscoverable. Decide whether it belongs in the
-  nav, is linked from the homepage, or stays a shareable direct URL.
+- ~~`/map` has no nav link.~~ Done: it sits in `navLinks`
+  (`app/layout.tsx:17`) as "Easton Map".
 - ~~Nothing reads the table back.~~ Done: `/map` now has a "Submissions so far"
   section overlaying every submitted boundary, fed by
   `GET /api/boundary/geojson`. Geometry only — no name or email leaves the
@@ -42,8 +41,10 @@ Before it can ship:
   turns any throw into a generic "Server error", so a misconfigured database
   looks identical to a bad request and the drawing is gone. Worth a distinct
   message before this is promoted widely.
-- **`package-lock.json` doesn't include the Leaflet stack** (see below), so a
-  build from the lockfile will fail.
+- ~~`package-lock.json` doesn't include the Leaflet stack.~~ Done: the
+  lockfile carries `leaflet`, `@geoman-io/leaflet-geoman-free`,
+  `@types/leaflet` and `@neondatabase/serverless`, and `npm ci` installs
+  cleanly (verified 2026-09-09).
 - **`QOMON_BOUNDARY_FIELD_ID` is optional** and unset. Without it submissions
   still land in Neon and the contact is still upserted, just without the marker
   field. It needs a paid Qomon tier.
@@ -52,17 +53,22 @@ Before it can ship:
   the form displays — the boundary is saved, so a resubmit would only duplicate
   the geometry — but nobody is alerted. Worth a look if submissions matter.
 
-### Instagram strip — unmerged, on `origin/instagram-embed`
+### Instagram strip — on this branch, unmerged to `main`
 
-That branch is this one plus 153 lines: `lib/instagram.ts`,
-`components/InstagramStrip.tsx`, a `SHOW_INSTAGRAM` feature flag, and CSS. It
-pulls posts from **Behold** (a hosted Instagram feed service) via a new
-`BEHOLD_FEED_URL` env var and renders full-bleed three-post strips as section
-dividers on the home, press, proposal and rationale pages. Hides itself if fewer
-than three posts come back.
+`lib/instagram.ts`, `components/InstagramStrip.tsx`, a `SHOW_INSTAGRAM` feature
+flag, and the `.igStrip` rules in `app/globals.css`. It pulls posts from
+**Behold** (a hosted Instagram feed service) via a `BEHOLD_FEED_URL` env var and
+renders full-bleed three-post strips as section dividers on the home, press,
+proposal and rationale pages. Hides itself if fewer than three posts come back.
 
-Same-day work as the boundary map. Since both branches share the boundary commit,
-decide the merge order before either lands.
+Before it can ship:
+
+- **`BEHOLD_FEED_URL` is documented but unset.** `.env.example` covers it;
+  no environment supplies a value yet. `getInstagramPosts`
+  (`lib/instagram.ts:41`) returns `[]` when it is missing — no error, no
+  warning. Because the component renders `null` on fewer than three posts,
+  every page looks correct with no strips on it at all, so a missing URL is
+  easily mistaken for a working feed.
 
 ## Known gaps
 

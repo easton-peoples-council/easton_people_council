@@ -169,9 +169,6 @@ export default function BoundarySubmissions() {
   return (
     <>
       <p className="boundaryHint">
-        {features.length === 1
-          ? "One boundary submitted so far."
-          : `${features.length} boundaries submitted so far.`}{" "}
         Deeper shading marks the areas more people included.
       </p>
 

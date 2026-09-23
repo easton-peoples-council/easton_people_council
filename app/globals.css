@@ -76,6 +76,11 @@ body {
   letter-spacing: 0.02em;
   color: var(--color-text);
   background: var(--color-bg);
+  /* Full-bleed children (.igStrip, .calendarFullWidth) are 100vw, which counts
+     the scrollbar and so overhangs the layout width by its ~15px. clip absorbs
+     that; unlike hidden it creates no scroll container, so scroll-behavior:
+     smooth and the #calendar / #get-involved anchors keep working. */
+  overflow-x: clip;
 }
 
 main {
@@ -644,6 +649,45 @@ main section p {
   background: var(--color-accent);
   border-radius: var(--radius);
   white-space: pre-wrap;
+}
+
+.igStrip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  /* Escape the 720px container, then pad back in so the tiles span at most
+     1080px, centred, keeping 1rem of edge on narrow screens. */
+  padding-inline: max(1rem, (100vw - 1080px) / 2);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.igStrip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* Phones take two tiles, not three: a third column leaves them too small to
+   read. The strip always renders three, so the spare is hidden rather than
+   left orphaned on a second row. */
+@media (max-width: 600px) {
+  .igStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .igStrip > a:nth-child(3) {
+    display: none;
+  }
+}
+
+/* A strip stands in for the divider, so the section below drops its own rule. */
+.igStrip + .contentSection,
+.igStrip + .getInvolved {
+  border-top: none;
 }
 
 .boundaryMap {

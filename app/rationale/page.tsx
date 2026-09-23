@@ -1,8 +1,11 @@
+import InstagramStrip from "@/components/InstagramStrip";
+import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
 import GetInTouchSection from "../GetInTouchSection";
 
 export default async function RationalePage() {
   const contactsCount = await getContactsCountOrNull("rationale/page");
+  const posts = await getInstagramPosts();
 
   return (
     <>
@@ -25,6 +28,8 @@ export default async function RationalePage() {
         </p>
       </section>
 
+      <InstagramStrip posts={posts} offset={0} />
+
       <section className="contentSection">
         <h2>Why now?</h2>
         <p>Many people feel that the current system isn&apos;t working as well as it should.</p>
@@ -44,6 +49,8 @@ export default async function RationalePage() {
       </section>
 
       <GetInTouchSection contactsCount={contactsCount} className="contentSection rationaleCtaSection" borderTop="none" />
+
+      <InstagramStrip posts={posts} offset={3} />
 
       <section className="contentSection">
         <h2>Tell me more...</h2>
@@ -66,6 +73,8 @@ export default async function RationalePage() {
         </p>
       </section>
 
+      <InstagramStrip posts={posts} offset={6} />
+
       <section className="contentSection">
         <h2>Isn&apos;t this just more bureaucracy?</h2>
         <p>
@@ -75,9 +84,11 @@ export default async function RationalePage() {
         </p>
       </section>
 
+      <InstagramStrip posts={posts} offset={9} />
+
       <section className="contentSection">
         <h2>Has this worked in other places?</h2>
-        <p>There are thousands of local councils all around the country but they are all in rural areas.</p>
+        <p>There are thousands of parish (local) councils all around the country but they are all in rural areas.</p>
         <p>
           Ten years ago in Queens Park in London, a group of residents set up a Community Council (also known as
           &apos;The People&apos;s Republic of Queen Park&apos;) when the Government announced lots of cuts. 70% of residents voted

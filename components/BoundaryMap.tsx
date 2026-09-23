@@ -245,7 +245,7 @@ export default function BoundaryMap() {
 
       <form className="signupForm" onSubmit={handleSubmit}>
         <p className="boundaryHint">
-          Use the polygon tool at the top left of the map to trace your Easton
+          Use the shape tool at the top left of the map to trace your Easton
           boundary.
         </p>
 
