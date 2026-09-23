@@ -88,7 +88,7 @@ export default async function RationalePage() {
 
       <section className="contentSection">
         <h2>Has this worked in other places?</h2>
-        <p>There are thousands of local councils all around the country but they are all in rural areas.</p>
+        <p>There are thousands of parish (local) councils all around the country but they are all in rural areas.</p>
         <p>
           Ten years ago in Queens Park in London, a group of residents set up a Community Council (also known as
           &apos;The People&apos;s Republic of Queen Park&apos;) when the Government announced lots of cuts. 70% of residents voted
