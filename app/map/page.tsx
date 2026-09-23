@@ -14,10 +14,9 @@ export default function BoundaryPage() {
       </section>
 
       <section className="contentSection">
-        <h2>Submissions so far</h2>
+        <h2>Submissions</h2>
         <p>
-          Where residents agree on Easton’s edges, and every boundary drawn so
-          far. Submissions are stored without names or contact details.
+          Where residents agree on Easton’s edges so far.
         </p>
         <BoundarySubmissions />
       </section>
