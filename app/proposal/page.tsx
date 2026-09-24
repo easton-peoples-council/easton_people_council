@@ -31,7 +31,8 @@ export default async function ProposalPage() {
       </section>
       <GetInTouchSection contactsCount={contactsCount} className="contentSection proposalSection proposalCtaSection" borderTop="none" />
 
-      <InstagramStrip posts={posts} offset={0} />
+      <InstagramStrip posts={posts} offset={0} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={0} count={2} variant="narrow" />
 
       <section className="contentSection proposalSection">
         <h2>FAQs</h2>
@@ -102,7 +103,8 @@ export default async function ProposalPage() {
         </article>
       </section>
 
-      <InstagramStrip posts={posts} offset={2} />
+      <InstagramStrip posts={posts} offset={3} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={2} count={2} variant="narrow" />
 
       <CalendarSection text="Still have questions? Come to an upcoming info session and ask them in person." />
     </>

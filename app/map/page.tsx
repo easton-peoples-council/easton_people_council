@@ -28,7 +28,8 @@ export default async function BoundaryPage() {
         <BoundarySubmissions />
       </section>
 
-      <InstagramStrip posts={posts} offset={0} />
+      <InstagramStrip posts={posts} offset={0} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={0} count={2} variant="narrow" />
 
       <GetInTouchSection contactsCount={contactsCount} />
     </>

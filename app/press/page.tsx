@@ -129,7 +129,8 @@ export default async function PressPage({ searchParams }: Props) {
           })}
         </ul>
       )}
-      <InstagramStrip posts={posts} offset={0} />
+      <InstagramStrip posts={posts} offset={0} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={0} count={2} variant="narrow" />
       <GetInTouchSection
         contactsCount={contactsCount}
         text="Want to contribute with your thoughts and stories about Easton?"

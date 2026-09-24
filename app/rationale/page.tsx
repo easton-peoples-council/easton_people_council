@@ -28,7 +28,8 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={0} />
+      <InstagramStrip posts={posts} offset={0} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={0} count={2} variant="narrow" />
 
       <section className="contentSection">
         <h2>Why now?</h2>
@@ -50,7 +51,7 @@ export default async function RationalePage() {
 
       <GetInTouchSection contactsCount={contactsCount} className="contentSection rationaleCtaSection" borderTop="none" />
 
-      <InstagramStrip posts={posts} offset={2} />
+      <InstagramStrip posts={posts} offset={2} count={2} variant="narrow" mobileOnly />
 
       <section className="contentSection">
         <h2>Tell me more...</h2>
@@ -73,10 +74,11 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={4} />
+      <InstagramStrip posts={posts} offset={3} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={4} count={2} variant="narrow" />
 
       <section className="contentSection">
-        <h2>Isn&apos;t this just more bureaucracy?</h2>
+        <h2>Are decisions implemented quickly?</h2>
         <p>
           If you&apos;ve ever waited 6 months for the council to fix a pothole, you already know the old system is broken.
           A People&apos;s Council cuts through bureaucracy by putting decisions in the hands of locals. We keep it simple:
@@ -84,7 +86,7 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={6} />
+      <InstagramStrip posts={posts} offset={6} count={2} variant="narrow" mobileOnly />
 
       <section className="contentSection">
         <h2>Has this worked in other places?</h2>
