@@ -50,7 +50,7 @@ export default async function RationalePage() {
 
       <GetInTouchSection contactsCount={contactsCount} className="contentSection rationaleCtaSection" borderTop="none" />
 
-      <InstagramStrip posts={posts} offset={3} />
+      <InstagramStrip posts={posts} offset={2} />
 
       <section className="contentSection">
         <h2>Tell me more...</h2>
@@ -73,7 +73,7 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={6} />
+      <InstagramStrip posts={posts} offset={4} />
 
       <section className="contentSection">
         <h2>Isn&apos;t this just more bureaucracy?</h2>
@@ -84,7 +84,7 @@ export default async function RationalePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={9} />
+      <InstagramStrip posts={posts} offset={6} />
 
       <section className="contentSection">
         <h2>Has this worked in other places?</h2>
