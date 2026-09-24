@@ -1,9 +1,9 @@
-import Calendar from "@/components/Calendar";
 import InstagramStrip from "@/components/InstagramStrip";
 import { SHOW_PETITION } from "@/lib/feature-flags";
 import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
 import Link from "next/link";
+import CalendarSection from "./CalendarSection";
 import HomeGetInTouchCta from "./HomeGetInTouchCta";
 import SignupForm from "./SignupForm";
 
@@ -99,15 +99,7 @@ export default async function HomePage() {
 
       <InstagramStrip posts={posts} offset={4} />
 
-      <section id="calendar" className="contentSection">
-        <h2>Come and learn more!</h2>
-        <p>
-          Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea.
-        </p>
-        <div className="calendarFullWidth">
-          <Calendar />
-        </div>
-      </section>
+      <CalendarSection text="Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea." />
     </>
   );
 }

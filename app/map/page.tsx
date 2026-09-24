@@ -1,7 +1,14 @@
 import BoundaryMap from "@/components/BoundaryMap";
 import BoundarySubmissions from "@/components/BoundarySubmissions";
+import InstagramStrip from "@/components/InstagramStrip";
+import { getInstagramPosts } from "@/lib/instagram";
+import { getContactsCountOrNull } from "@/lib/qomon";
+import GetInTouchSection from "../GetInTouchSection";
 
-export default function BoundaryPage() {
+export default async function BoundaryPage() {
+  const contactsCount = await getContactsCountOrNull("map/page");
+  const posts = await getInstagramPosts();
+
   return (
     <>
       <section className="contentSection">
@@ -20,6 +27,10 @@ export default function BoundaryPage() {
         </p>
         <BoundarySubmissions />
       </section>
+
+      <InstagramStrip posts={posts} offset={0} />
+
+      <GetInTouchSection contactsCount={contactsCount} />
     </>
   );
 }

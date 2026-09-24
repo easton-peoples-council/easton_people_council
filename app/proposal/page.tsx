@@ -1,6 +1,7 @@
 import InstagramStrip from "@/components/InstagramStrip";
 import { getInstagramPosts } from "@/lib/instagram";
 import { getContactsCountOrNull } from "@/lib/qomon";
+import CalendarSection from "../CalendarSection";
 import GetInTouchSection from "../GetInTouchSection";
 
 export default async function ProposalPage() {
@@ -100,6 +101,10 @@ export default async function ProposalPage() {
           <p>Exactly how this would work in Easton would be shaped by residents.</p>
         </article>
       </section>
+
+      <InstagramStrip posts={posts} offset={2} />
+
+      <CalendarSection text="Still have questions? Come to an upcoming info session and ask them in person." />
     </>
   );
 }
