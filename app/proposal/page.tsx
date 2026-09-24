@@ -82,7 +82,7 @@ export default async function ProposalPage() {
 
         <article className="proposalFaq">
           <h3>Would the council hold elections?</h3>
-          <p>Yes. By law, councillors must be elected every four years.</p>
+          <p>Councillors are elected every 4 years or less.</p>
           <p>
             Residents could stand as candidates and represent the area as individuals rather than political parties if they choose.
           </p>
@@ -91,7 +91,7 @@ export default async function ProposalPage() {
         <article className="proposalFaq">
           <h3>Could we have a bigger say in decision-making?</h3>
           <p>
-            In short, yes. Different councils experiment with different ways of making decisions, with some of them heavily participatory.
+            Yes! Different councils experiment with different ways of making decisions, with some of them heavily participatory.
           </p>
           <p>Some ideas include:</p>
           <ul>
