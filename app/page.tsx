@@ -29,7 +29,8 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={0} />
+      <InstagramStrip posts={posts} offset={0} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={0} count={2} variant="narrow" />
 
       <section className="contentSection">
         <h2>How can I get involved?</h2>
@@ -45,7 +46,8 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={2} />
+      <InstagramStrip posts={posts} offset={3} count={3} variant="wide" />
+      <InstagramStrip posts={posts} offset={2} count={2} variant="narrow" />
 
       <section id="get-involved" className="getInvolved">
         <h2>Get Involved Today!</h2>
@@ -97,7 +99,7 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={4} />
+      <InstagramStrip posts={posts} offset={4} count={2} variant="narrow" mobileOnly />
 
       <CalendarSection text="Come to an upcoming in-person info session to learn more and have a chance to discuss with your neighbours about the idea." />
     </>

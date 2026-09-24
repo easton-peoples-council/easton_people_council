@@ -656,12 +656,31 @@ main section p {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   /* Escape the 720px container, then pad back in so the tiles span at most
-     880px, centred, keeping 1rem of edge on narrow screens. */
-  padding-inline: max(1rem, (100vw - 880px) / 2);
+     1080px, centred, keeping 1rem of edge on narrow screens. */
+  padding-inline: max(1rem, (100vw - 1080px) / 2);
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+}
+
+.igStrip--wide {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Each position renders both variants, and one of them is always hidden. */
+.igStrip--narrow {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 600px) {
+  .igStrip--wide {
+    display: none;
+  }
+
+  .igStrip--narrow {
+    display: grid;
+  }
 }
 
 .igStrip img {
@@ -675,6 +694,15 @@ main section p {
 .igStrip + .contentSection,
 .igStrip + .getInvolved {
   border-top: none;
+}
+
+/* A mobile-only band shows nothing on wider screens, so the section below it
+   keeps the divider the rule above removes. */
+@media (min-width: 601px) {
+  .igStrip--mobileOnly + .contentSection,
+  .igStrip--mobileOnly + .getInvolved {
+    border-top: 1px solid var(--color-border);
+  }
 }
 
 .boundaryMap {
