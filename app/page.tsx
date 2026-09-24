@@ -60,8 +60,6 @@ export default async function HomePage() {
         )}
       </section>
 
-      <InstagramStrip posts={posts} offset={4} />
-
       <section className="contentSection">
         <h2>What&apos;s happening now?</h2>
         <p>Right now, the focus is simple: talking to as many residents as possible.</p>
@@ -99,7 +97,7 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <InstagramStrip posts={posts} offset={6} />
+      <InstagramStrip posts={posts} offset={4} />
 
       <section id="calendar" className="contentSection">
         <h2>Come and learn more!</h2>
