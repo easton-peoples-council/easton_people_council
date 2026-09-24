@@ -7,7 +7,7 @@ type InstagramStripProps = {
 };
 
 /**
- * A full-bleed row of 3 posts standing in for a section divider.
+ * A full-bleed row of 2 posts standing in for a section divider.
  *
  * Must render a div, never a section: .contentSection:first-of-type matches per
  * element type, so a section here would take that match away from the first
@@ -19,8 +19,8 @@ type InstagramStripProps = {
  */
 export default function InstagramStrip({ posts, offset }: InstagramStripProps) {
   if (!SHOW_INSTAGRAM) return null;
-  const tiles = posts.slice(offset, offset + 3);
-  if (tiles.length < 3) return null;
+  const tiles = posts.slice(offset, offset + 2);
+  if (tiles.length < 2) return null;
 
   return (
     <div className="igStrip">
